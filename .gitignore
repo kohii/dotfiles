@@ -1,0 +1,10 @@
+ignore all
+/*
+/.**
+
+!/.gitignore
+!/.ideavimrc
+!/.zshrc
+!/.config/
+!/.config/**
+!/install.sh
