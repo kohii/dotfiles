@@ -1,10 +1,6 @@
-ignore all
-/*
-/.**
+.DS_Store
 
-!/.gitignore
-!/.ideavimrc
-!/.zshrc
-!/.config/
-!/.config/**
-!/install.sh
+/.config/nvim/doc/tags
+/.config/nvim/test.sh
+/.config/nvim/.luarc.json
+/.config/nvim/lazy-lock.json
