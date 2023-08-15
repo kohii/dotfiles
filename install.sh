@@ -1,9 +1,9 @@
 #!/bin/bash
 
 install_dotfiles() {
-	local dotfiles=(.ideavimrc)
+	local dotfiles=(.ideavimrc, .config/nvim)
 	for file in "${dotfiles[@]}"; do
-		ln -svf ~/dotfiles/$file ~
+		ln -svf ~/dotfiles/$file ~/$file
 	done
 }
 
@@ -26,4 +26,4 @@ install_configs() {
 
 
 install_dotfiles
-install_configs
+#install_configs
