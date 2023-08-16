@@ -3,7 +3,11 @@
 install_dotfiles() {
 	local dotfiles=(.ideavimrc .mackup.cfg .config/nvim)
 	for file in "${dotfiles[@]}"; do
-		ln -svf ~/dotfiles/$file ~/$file
+		if [ -d ~/dotfiles/$file ]; then
+			ln -svf ~/dotfiles/$file/ ~/$file
+		else
+			ln -svf ~/dotfiles/$file ~/$file
+		fi
 	done
 }
 
