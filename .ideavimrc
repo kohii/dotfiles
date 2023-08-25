@@ -34,10 +34,13 @@ Plug 'tpope/vim-commentary'
 "map \b <Action>(ToggleLineBreakpoint)
 set ideajoin
 
-
+" Highlight search result
 set hlsearch
 
 set clipboard+=unnamed
+
+" Automatically turn off IME when exiting from insert mode
+set iminsert=2
 
 nmap / :action Find<CR>
 nmap n :action FindNext<CR>
