@@ -158,11 +158,9 @@ require('lazy').setup({
     -- Add indentation guides even on blank lines
     'lukas-reineke/indent-blankline.nvim',
     -- Enable `lukas-reineke/indent-blankline.nvim`
-    -- See `:help indent_blankline.txt`
-    opts = {
-      char = '┊',
-      show_trailing_blankline_indent = false,
-    },
+    -- See `:help ibl`
+    main = 'ibl',
+    opts = {},
   },
 
   -- "gc" to comment visual regions/lines
@@ -211,6 +209,10 @@ require('lazy').setup({
   --
   --    For additional information see: https://github.com/folke/lazy.nvim#-structuring-your-plugins
   -- { import = 'custom.plugins' },
+  {
+    -- filer
+    'preservim/nerdtree',
+  }
 }, {})
 
 -- [[ Setting options ]]
@@ -526,6 +528,15 @@ cmp.setup {
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
 
+-- vscode
 if vim.g.vscode then
   require("vscode")
 end
+
+-- nerdtree
+vim.keymap.set('n', '<leader>nt', ':NERDTreeToggle<CR>', { desc = '[N]erdTree [T]oggle' })
+vim.keymap.set('n', '<leader>nf', ':NERDTreeFind<CR>', { desc = '[N]erdTree [F]ind' })
+
+-- require('im_select').setup {
+--     default_im_select = "com.justsystems.inputmethod.atok33.Roman"
+-- }
