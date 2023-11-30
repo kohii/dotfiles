@@ -1,7 +1,7 @@
 #!/bin/bash
 
 install_dotfiles() {
-	local dotfiles=(.ideavimrc .mackup.cfg .config/nvim Brewfile)
+	local dotfiles=(.ideavimrc .mackup.cfg .gitconfig .config/nvim Brewfile)
 	for file in "${dotfiles[@]}"; do
 		if [ -d ~/dotfiles/$file ]; then
 			ln -svf ~/dotfiles/$file/ ~/$file

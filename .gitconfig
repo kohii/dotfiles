@@ -1,0 +1,32 @@
+[push]
+	default = simple
+	autoSetupRemote = true
+[color]
+	ui = true
+[core]
+	excludesfile = /Users/kohei/.gitignore_global
+	autocrlf = false
+	pager = diff-so-fancy | less --tabs=4 -RF
+[alias]
+	graph = log --graph --date-order --all --pretty=format:'%h %Cred%d %Cgreen%ad %Cblue%cn %Creset%s' --date=short
+	co = checkout
+	br = branch
+	ci = commit
+	st = status
+[user]
+	useConfigOnly = true
+	email = kohii.tokyo@gmail.com
+	name = kohii
+[difftool "sourcetree"]
+	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
+	path = 
+[mergetool "sourcetree"]
+	cmd = /Applications/Sourcetree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
+	trustExitCode = true
+[commit]
+	template = /Users/kohei/.stCommitMsg
+[url "git@github.com:"]
+	insteadOf = https://github.com/
+	insteadOf = git://github.com/
+[interactive]
+	diffFilter = diff-so-fancy --patch
