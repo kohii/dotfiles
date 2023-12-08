@@ -624,6 +624,9 @@ end
 vim.keymap.set('n', '<leader>nt', ':NERDTreeToggle<CR>', { desc = '[N]erdTree [T]oggle' })
 vim.keymap.set('n', '<leader>nf', ':NERDTreeFind<CR>', { desc = '[N]erdTree [F]ind' })
 
+-- clear highlighting on refresh
+vim.keymap.set('n', '<C-l>', ':nohlsearch<CR><C-l>', { noremap = true })
+
 -- require('im_select').setup {
 --     default_im_select = "com.justsystems.inputmethod.atok33.Roman"
 -- }
