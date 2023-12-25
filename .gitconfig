@@ -13,10 +13,11 @@
 	br = branch
 	ci = commit
 	st = status
+	dmb = ! git branch --merged | grep -v \\* | grep -v -E '\\b(master|main|develop)\\b' | xargs -n 1 git branch -d
 [user]
 	useConfigOnly = true
-	email = kohii.tokyo@gmail.com
-	name = kohii
+	email = github-actions[bot]@users.noreply.github.com
+	name = github-actions[bot]
 [difftool "sourcetree"]
 	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
 	path = 
