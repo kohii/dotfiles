@@ -66,7 +66,7 @@ vim.opt.rtp:prepend(lazypath)
 --
 --  You can also configure plugins after the setup call,
 --    as they will be available in your neovim runtime.
-require('lazy').setup({
+local neovim_plugins = {
   -- NOTE: First, some plugins that don't require any configuration
 
   -- Git related plugins
@@ -287,7 +287,36 @@ require('lazy').setup({
     -- filer
     'preservim/nerdtree',
   }
-}, {})
+}
+
+local vscode_plugins = {
+  -- nothing at the moment
+}
+
+local common_plugins = {
+  {
+    "bkad/CamelCaseMotion",
+    init = function()
+      vim.g.camelcasemotion_key = "<leader>"
+    end,
+  }
+}
+
+function merge_tables(t1, t2)
+  local merged = {}
+  for _, v in ipairs(t1) do
+      table.insert(merged, v)
+  end
+  for _, v in ipairs(t2) do
+      table.insert(merged, v)
+  end
+  return merged
+end
+
+local is_vscode = vim.g.vscode == 1
+require('lazy').setup(
+  merge_tables(common_plugins, is_vscode and vscode_plugins or neovim_plugins)
+)
 
 -- [[ Setting options ]]
 -- See `:help vim.o`
