@@ -363,6 +363,10 @@ vim.o.termguicolors = true
 vim.wo.list = true
 vim.wo.listchars = 'tab:> ,extends:❯,precedes:❮,nbsp:␣'
 
+vim.opt.shiftwidth = 4
+vim.opt.tabstop = 4
+vim.opt.expandtab = true
+
 -- [[ Basic Keymaps ]]
 
 -- Keymaps for better default experience
