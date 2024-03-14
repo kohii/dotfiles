@@ -1,0 +1,8 @@
+.ideavimrc
+.mackup.cfg
+.gitconfig
+.gitignore_global
+.zshrc
+.config/nvim
+Brewfile
+.config/starship.toml
