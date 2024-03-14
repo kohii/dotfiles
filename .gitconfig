@@ -23,7 +23,8 @@
 	cp = cherry-pick
 	sw = switch
 	swc = switch -c
-	unstage = reset HEAD --
+	rs = restore
+	rss = restore --staged
 	df = diff
 	dfs = diff --staged
 	dv = difftool -t vimdiff -y
