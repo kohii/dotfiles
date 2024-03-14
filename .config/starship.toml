@@ -16,7 +16,7 @@ style = "bold yellow"
 format = "[$env_value]($style) "
 
 [custom.dotfiles]
-command = "cd ~/dotfiles && git rev-parse @{upstream} > /dev/null 2>&1 && echo \"[dotfiles*]\""
+command = "cd ~/dotfiles && ! git diff --quiet remotes/origin/HEAD 2>/dev/null && echo \"[dotfiles*]\""
 when = "test -d ~/dotfiles/.git"
 format = "$output"
 
