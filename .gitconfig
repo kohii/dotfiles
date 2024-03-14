@@ -8,6 +8,9 @@
 [core]
 	excludesfile = ~/.gitignore_global
 	autocrlf = false
+	ignorecase = false
+	quotepath = false
+	safecrlf = true
 	pager = diff-so-fancy | less --tabs=4 -RF
 	editor = nvim
 
