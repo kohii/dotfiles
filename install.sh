@@ -13,8 +13,8 @@ install_dotfiles() {
 
 install_dotfiles
 
-chmod +x ./setup.sh
-./setup_macos.sh
+chmod +x ./configure_macos.sh
+./configure_macos.sh
 
 mackup backup
 brew bundle
