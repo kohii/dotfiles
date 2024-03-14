@@ -37,9 +37,8 @@
 	email = kohii.tokyo@gmail.com
 	name = kohii
 
-[difftool "sourcetree"]
-	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
-	path = 
+[difftool]
+    prompt = false
 
 [commit]
 	template = /Users/kohei/.stCommitMsg
