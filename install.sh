@@ -9,12 +9,16 @@ create_symlink() {
 
     if [ -e "$target" ]; then
         if [ -L "$target" ]; then
-            ln -svf "$source" "$target"
+            if [ "$(readlink -- "$target")" = "$source" ]; then
+                echo "The symlink $target already points to $source."
+            else
+                ln -snfv "$source" "$target"
+            fi
         else
             echo "Error: $target already exists and is not a symlink."
         fi
     else
-        ln -sv "$source" "$target"
+        ln -snv "$source" "$target"
     fi
 }
 
@@ -22,12 +26,7 @@ install_dotfiles() {
     while IFS= read -r file; do
         source="$dotfiles_dir/$file"
         target="$HOME/$file"
-
-        if [ -d "$source" ]; then
-            create_symlink "$source/" "$target"
-        else
-            create_symlink "$source" "$target"
-        fi
+        create_symlink "$source" "$target"
     done < "$dotfiles_list_file"
 }
 
