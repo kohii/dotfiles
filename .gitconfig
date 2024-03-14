@@ -1,33 +1,72 @@
 [push]
 	default = simple
 	autoSetupRemote = true
+
 [color]
 	ui = true
+
 [core]
-	excludesfile = /Users/kohei/.gitignore_global
+	excludesfile = ~/.gitignore_global
 	autocrlf = false
 	pager = diff-so-fancy | less --tabs=4 -RF
+	editor = nvim
+
 [alias]
-	graph = log --graph --date-order --all --pretty=format:'%h %Cred%d %Cgreen%ad %Cblue%cn %Creset%s' --date=short
 	co = checkout
 	br = branch
 	ci = commit
-	st = status
+	cm = commit -m
+	st = status -sb
+	cp = cherry-pick
+	sw = switch
+	swc = switch -c
+	unstage = reset HEAD --
+	df = diff
+	dfs = diff --staged
+	dv = difftool -t vimdiff -y
+	rv = remote -v
+	lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+	hist = log --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short
+	graph = log --graph --date-order --all --pretty=format:'%h %Cred%d %Cgreen%ad %Cblue%cn %Creset%s' --date=short
+	last = log -1 HEAD
+	se = !git rev-list --all | xargs git grep -F
 	dmb = ! git branch --merged | grep -v \\* | grep -v -E '\\b(master|main|develop)\\b' | xargs -n 1 git branch -d
+
 [user]
 	useConfigOnly = true
 	email = kohii.tokyo@gmail.com
 	name = kohii
+
 [difftool "sourcetree"]
 	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
 	path = 
+
 [mergetool "sourcetree"]
 	cmd = /Applications/Sourcetree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
 	trustExitCode = true
+
 [commit]
 	template = /Users/kohei/.stCommitMsg
+
 [url "git@github.com:"]
 	insteadOf = https://github.com/
 	insteadOf = git://github.com/
+
 [interactive]
 	diffFilter = diff-so-fancy --patch
+
+[pull]
+	rebase = false
+
+[branch "master"]
+	mergeOptions = --ff-only
+
+[branch "main"]
+	mergeOptions = --ff-only
+
+[branch "develop"]
+	mergeOptions = --ff-only
+
+[init]
+	defaultBranch = main
+
