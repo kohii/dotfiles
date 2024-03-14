@@ -43,9 +43,6 @@
 [difftool]
     prompt = false
 
-[commit]
-	template = /Users/kohei/.stCommitMsg
-
 [url "git@github.com:"]
 	insteadOf = https://github.com/
 	insteadOf = git://github.com/
