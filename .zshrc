@@ -46,6 +46,7 @@ setopt AUTO_PARAM_SLASH
 setopt NOTIFY
 setopt MAGIC_EQUAL_SUBST
 setopt INTERACTIVE_COMMENTS
+setopt NO_LIST_BEEP
 
 #======================================
 # Prompt
