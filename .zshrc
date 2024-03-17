@@ -47,6 +47,7 @@ setopt NOTIFY
 setopt MAGIC_EQUAL_SUBST
 setopt INTERACTIVE_COMMENTS
 setopt NO_LIST_BEEP
+setopt IGNORE_EOF
 
 #======================================
 # Prompt
