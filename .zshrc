@@ -261,6 +261,14 @@ function iterm() {
   open -a $appPath $openPath
 }
 
+function dotfilesUpdate() {
+  cd ~/dotfiles/
+  git pull --ff-only
+  ./install.sh
+  cd -
+}
+########################################
+
 # HSTR configuration - add this to ~/.zshrc
 alias hh=hstr                    # hh to be alias for hstr
 setopt histignorespace           # skip cmds w/ leading space from history
