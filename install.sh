@@ -30,13 +30,26 @@ install_dotfiles() {
     done < "$dotfiles_list_file"
 }
 
+load_launchctl_job() {
+    local plist_file="$1"
+    local target="$HOME/Library/LaunchAgents/$plist_file"
+
+    local job_name=$(echo "$plist_file" | sed 's/\.plist$//')
+
+    if launchctl list | awk '{print $3}' | grep -q "$job_name"; then
+        echo "$job_name is already loaded"
+    else
+        launchctl load "$target"
+    fi
+}
+
 install_launchd() {
     files=("tokyo.kohii.gitfetch.plist")
     for file in "${files[@]}"; do
         source="$dotfiles_dir/launchd/$file"
         target="$HOME/Library/LaunchAgents/$file"
         create_symlink "$source" "$target"
-        launchctl load "$target"
+        load_launchctl_job "$file"
     done
 }
 
