@@ -30,12 +30,24 @@ install_dotfiles() {
     done < "$dotfiles_list_file"
 }
 
+install_launchd() {
+    files=("tokyo.kohii.gitfetch.plist")
+    for file in "${files[@]}"; do
+        source="$dotfiles_dir/launchd/$file"
+        target="$HOME/Library/LaunchAgents/$file"
+        create_symlink "$source" "$target"
+        launchctl load "$target"
+    done
+}
+
 if [ -f "$dotfiles_list_file" ]; then
     install_dotfiles
 else
     echo "Error: $dotfiles_list_file not found."
     exit 1
 fi
+
+install_launchd
 
 chmod +x ./configure_macos.sh
 ./configure_macos.sh
