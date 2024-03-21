@@ -36,7 +36,7 @@ load_launchctl_job() {
 
     local job_name=$(echo "$plist_file" | sed 's/\.plist$//')
 
-    if launchctl list | awk '{print $3}' | grep -q "$job_name"; then
+    if launchctl list | grep -q "$job_name"; then
         echo "$job_name is already loaded"
     else
         launchctl load "$target"
