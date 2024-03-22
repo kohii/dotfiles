@@ -109,9 +109,9 @@ alias pip=pip3
 # Functions
 #======================================
 
-iterm() {
+term() {
   local openPath="./"
-  local appPath="/Applications/iTerm.app"
+  local appPath="/Applications/Kitty.app"
   [[ $# != 0 ]] && openPath="$1"
   open -a $appPath $openPath
 }
