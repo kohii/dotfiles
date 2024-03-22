@@ -6,3 +6,4 @@
 .config/nvim
 Brewfile
 .config/starship.toml
+.config/kitty/kitty.conf

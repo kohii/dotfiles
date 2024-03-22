@@ -154,6 +154,9 @@ fi
 
 eval "$(starship init zsh)"
 
+# kitty title
+precmd () {print -Pn "\e]0;%~\a"}
+
 #======================================
 # Local Settings
 #======================================
