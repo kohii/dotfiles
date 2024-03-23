@@ -62,7 +62,12 @@ RPROMPT='${vcs_info_msg_0_}'
 # Completion
 #======================================
 
-autoload -Uz compinit && compinit
+if type brew &>/dev/null; then
+  FPATH=$(brew --prefix)/share/zsh-completions:$FPATH
+  source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+  autoload -Uz compinit && compinit
+fi
+
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 zstyle ':completion:*' ignore-parents parent pwd ..
 zstyle ':completion:*' menu select
