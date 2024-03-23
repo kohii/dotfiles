@@ -18,6 +18,9 @@ HISTTIMEFORMAT="[%Y/%m/%d %H:%M:%S] "
 LISTMAX=1000
 WORDCHARS="$WORDCHARS|:"
 
+# Plugin settings
+eval "$(sheldon source)"
+
 #======================================
 # Options
 #======================================

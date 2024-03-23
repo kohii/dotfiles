@@ -7,3 +7,4 @@
 Brewfile
 .config/starship.toml
 .config/kitty/kitty.conf
+.config/sheldon/plugins.toml
