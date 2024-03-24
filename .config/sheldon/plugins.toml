@@ -22,9 +22,15 @@ shell = "zsh"
 [plugins.zsh-z]
 github = "agkozak/zsh-z"
 
+[plugins.compinit]
+inline = 'autoload -Uz compinit && compinit'
+
 [plugins.zsh-completions]
 github = "zsh-users/zsh-completions"
 
 [plugins.zsh-autosuggestions]
 github = "zsh-users/zsh-autosuggestions"
+
+[plugins.fast-syntax-highlighting]
+github = 'zdharma/fast-syntax-highlighting'
 
