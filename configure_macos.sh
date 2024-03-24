@@ -66,3 +66,6 @@ defaults write com.apple.CrashReporter DialogType -string "none"
 ## Auto install purchased apps
 defaults write com.apple.SoftwareUpdate ConfigDataInstall -int 1
 
+## Open Kitty via OpenInTerminal-Lite
+defaults write wang.jianing.app.OpenInTerminal-Lite LiteDefaultTerminal kitty
+
