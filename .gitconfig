@@ -48,6 +48,9 @@
 	insteadOf = https://github.com/
 	insteadOf = git://github.com/
 
+[ghq]
+	root = ~/dev/src
+
 [interactive]
 	diffFilter = diff-so-fancy --patch
 

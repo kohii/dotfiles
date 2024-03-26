@@ -84,12 +84,6 @@ precmd_vcs_info() { vcs_info }
 precmd_functions+=( precmd_vcs_info )
 
 #======================================
-# Key Bindings
-#======================================
-
-# bindkey '^R' history-incremental-pattern-search-backward
-
-#======================================
 # Aliases
 #======================================
 
@@ -106,6 +100,13 @@ alias teee='tee >(pbcopy)'
 
 alias python=python3
 alias pip=pip3
+
+#======================================
+# Key Bindings
+#======================================
+
+# bindkey '^R' history-incremental-pattern-search-backward
+bindkey '^]' peco-src
 
 #======================================
 # Functions
@@ -125,6 +126,18 @@ dotfilesUpdate() {
     ./install.sh
   )
 }
+
+# peco
+peco-src () {
+    local selected_dir=$(ghq list | peco --query "$LBUFFER")
+    if [ -n "$selected_dir" ]; then
+        selected_dir=$(ghq list --full-path --exact $selected_dir)
+        BUFFER="cd ${selected_dir}"
+        zle accept-line
+    fi
+    zle clear-screen
+}
+zle -N peco-src
 
 #======================================
 # Third-party Settings
