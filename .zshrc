@@ -21,6 +21,9 @@ WORDCHARS="$WORDCHARS|:"
 # Plugin settings
 eval "$(sheldon source)"
 
+# Default text editor
+export EDITOR=nvim
+
 #======================================
 # Options
 #======================================
