@@ -3,6 +3,15 @@
 dotfiles_dir=~/dotfiles
 dotfiles_list_file=~/dotfiles/dotfiles.txt
 
+ensure_parent_directory_exists() {
+    local target=$1
+    local target_dir=$(dirname "$target")
+
+    if [ ! -d "$target_dir" ]; then
+        mkdir -p "$target_dir"
+    fi
+}
+
 create_symlink() {
     local source=$1
     local target=$2
@@ -18,6 +27,7 @@ create_symlink() {
             echo "Error: $target already exists and is not a symlink."
         fi
     else
+        ensure_parent_directory_exists "$target"
         ln -snv "$source" "$target"
     fi
 }
