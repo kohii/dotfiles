@@ -1,8 +1,8 @@
 local plugins = {
   {
     'mikesmithgh/kitty-scrollback.nvim',
-    enabled = true,
-    lazy = not vim.g.vscode,
+    enabled = not vim.g.vscode,
+    lazy = true,
     cmd = { 'KittyScrollbackGenerateKittens', 'KittyScrollbackCheckHealth' },
     event = { 'User KittyScrollbackLaunch' },
     -- version = '*', -- latest stable version, may have breaking changes if major version changed
