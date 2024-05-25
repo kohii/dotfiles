@@ -5,7 +5,16 @@ return {
     config = function()
       require "configs.conform"
     end,
+    enabled = not vim.g.vscode,
   },
+  {
+    "nvim-treesitter/nvim-treesitter",
+    enabled = not vim.g.vscode,
+  },
+  {
+    "nvim-tree/nvim-web-devicons",
+    enabled = not vim.g.vscode,
+  }
 
   -- These are some examples, uncomment them if you want to see them work!
   -- {
