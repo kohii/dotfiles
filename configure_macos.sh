@@ -6,7 +6,7 @@ defaults write -g KeyRepeat -int 1 # normal minimum is 2 (30 ms)
 ## Enable full keyboard access for all controls
 defaults write NSGlobalDomain AppleKeyboardUIMode -int 2
 ## Use F1, F2, etc. keys as standard function keys
-defaults write "Apple Global Domain" "com.apple.keyboard.fnState" "1"
+defaults write NSGlobalDomain com.apple.keyboard.fnState -bool true
 
 # Dock
 ## Hide recent apps
