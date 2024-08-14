@@ -1,6 +1,3 @@
-# CodeWhisperer pre block. Keep at the top of this file.
-[[ -f "${HOME}/Library/Application Support/codewhisperer/shell/zshrc.pre.zsh" ]] && builtin source "${HOME}/Library/Application Support/codewhisperer/shell/zshrc.pre.zsh"
-
 #======================================
 # General Settings
 #======================================
@@ -182,8 +179,3 @@ precmd () {print -Pn "\e]0;%~\a"}
 # Import local zshrc if it exists
 [[ -f ~/.zshrc_local ]] && source ~/.zshrc_local
 
-# fig-export
-[[ -f "$HOME/fig-export/dotfiles/dotfile.zsh" ]] && builtin source "$HOME/fig-export/dotfiles/dotfile.zsh"
-
-# CodeWhisperer post block. Keep at the bottom of this file.
-[[ -f "${HOME}/Library/Application Support/codewhisperer/shell/zshrc.post.zsh" ]] && builtin source "${HOME}/Library/Application Support/codewhisperer/shell/zshrc.post.zsh"
