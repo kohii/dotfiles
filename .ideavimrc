@@ -43,3 +43,30 @@ set clipboard+=unnamed
 
 nnoremap <C-l> :nohlsearch<CR><C-l>
 
+" U to redo
+nnoremap U <c-r>
+
+" yank to end of lines
+nnoremap Y y$
+
+" i<space> and a<space> to select the word
+onoremap i<space> iW
+xnoremap i<space> iW
+
+" {visual}p to put without yank to unnamed register
+xnoremap p P
+
+" x to delete the character under the cursor without yanking it
+nnoremap x "_d
+nnoremap X "_D
+xnoremap x "_x
+onoremap x d
+
+" start searching with very magic
+nnoremap / /\v
+nnoremap ? /\V
+
+" S to replace the word under the cursor
+nnoremap S :%s/\V\<<C-r><C-w>\>//g<Left><Left>
+xnoremap S "zy:%s/\V<C-r><C-r>=escape(@z,'/\')<CR>//gce<Left><Left><Left><Left>
+
