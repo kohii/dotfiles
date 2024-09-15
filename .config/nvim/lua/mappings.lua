@@ -23,10 +23,10 @@ vim.keymap.set('x', 'i<space>', 'iW', { noremap = true })
 vim.keymap.set('x', 'p', 'P', { noremap = true })
 
 -- x to delete the character under the cursor without yanking it
-vim.keymap.set('n', 'x', '"_d', { noremap = true })
-vim.keymap.set('n', 'X', '"_D', { noremap = true })
+vim.keymap.set('n', 'x', '"_x', { noremap = true })
+vim.keymap.set('n', 'X', '"_X', { noremap = true })
 vim.keymap.set('x', 'x', '"_x', { noremap = true })
-vim.keymap.set('o', 'x', 'd', { noremap = true })
+vim.keymap.set('x', 'X', '"_X', { noremap = true })
 
 -- start searching with very magic
 vim.keymap.set('n', '/', '/\\v', { noremap = true })

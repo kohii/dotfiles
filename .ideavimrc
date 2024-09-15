@@ -57,10 +57,10 @@ xnoremap i<space> iW
 xnoremap p P
 
 " x to delete the character under the cursor without yanking it
-nnoremap x "_d
-nnoremap X "_D
+nnoremap x "_x
+nnoremap X "_X
 xnoremap x "_x
-onoremap x d
+xnoremap X "_X
 
 " start searching with very magic
 nnoremap / /\v
