@@ -163,6 +163,10 @@ alias hh=hstr                    # hh to be alias for hstr
 export HSTR_CONFIG=hicolor       # get more colors
 bindkey -s "\C-r" "\C-a hstr -- \C-j"     # bind hstr to Ctrl-r (for Vi mode check doc)
 
+# sccache for rust
+export RUSTC_WRAPPER=$(which sccache)
+export SCCACHE_CACHE_SIZE="10G"
+export SCCACHE_DIR="$HOME/.cache/sccache"
 
 # Created by `pipx` on 2025-04-13 02:56:45
 export PATH="$PATH:/Users/kohei/.local/bin"
