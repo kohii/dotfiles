@@ -75,6 +75,5 @@ install_launchd
 chmod +x ./configure_macos.sh
 ./configure_macos.sh
 
-mackup backup
 brew bundle
 
