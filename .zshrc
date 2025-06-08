@@ -157,6 +157,8 @@ export PATH="$DENO_INSTALL/bin:$PATH"
 [ -s "~/.bun/_bun" ] && source "~/.bun/_bun"
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
+## bun completions
+[ -s "~/.bun/_bun" ] && source "~/.bun/_bun"
 
 # hstr
 alias hh=hstr                    # hh to be alias for hstr
