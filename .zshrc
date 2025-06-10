@@ -107,6 +107,8 @@ alias pip=pip3
 
 # bindkey '^R' history-incremental-pattern-search-backward
 bindkey '^]' peco-src
+bindkey '^A' beginning-of-line
+bindkey '^E' end-of-line
 
 #======================================
 # Functions
