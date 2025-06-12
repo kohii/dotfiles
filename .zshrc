@@ -145,7 +145,7 @@ ghwatch() {
   fi
 
   echo "🔍 Watching workflow: $run_id"
-  if gh run watch "$run_id"; then
+  if gh run watch "$run_id" --exit-status; then
     osascript -e 'display notification "Workflow completed ✅" with title "GitHub Actions"'
   else
     osascript -e 'display notification "Workflow failed ❌" with title "GitHub Actions"'
