@@ -35,4 +35,3 @@ vim.keymap.set('n', '?', '/\\V', { noremap = true })
 -- S to replace the word under the cursor
 vim.keymap.set('n', 'S', ':%s/\\V\\<<C-r><C-w>\\>//g<Left><Left>', { noremap = true })
 vim.keymap.set('x', 'S', [["zy:%s/\V<C-r><C-r>=escape(@z,'/\\')<CR>//gce<Left><Left><Left><Left>"]], { noremap = true })
-
