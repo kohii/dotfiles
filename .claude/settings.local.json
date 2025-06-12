@@ -1,9 +1,0 @@
-{
-  "permissions": {
-    "allow": [
-      "Bash(gh run watch:*)",
-      "Bash(gh run list:*)"
-    ],
-    "deny": []
-  }
-}
