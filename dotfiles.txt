@@ -10,3 +10,4 @@ Brewfile
 .config/sheldon/plugins.toml
 .config/karabiner/karabiner.json
 .tmux.conf
+.claude/settings.json
