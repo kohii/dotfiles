@@ -7,3 +7,5 @@
 /.config/nvim/lazy-lock.json
 
 Brewfile.lock.json
+
+.claude/settings.local.json
