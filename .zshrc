@@ -129,6 +129,25 @@ dotfilesUpdate() {
   )
 }
 
+ghwatch() {
+  local input="$1"
+
+  if [ -z "$input" ]; then
+    echo "Usage: ghwatch <run-id or GitHub Actions URL>"
+    return 1
+  fi
+
+  # Extract run-id from URL if provided
+  if [[ "$input" =~ /actions/runs/([0-9]+) ]]; then
+    local run_id="${match[1]}"
+  else
+    local run_id="$input"
+  fi
+
+  echo "🔍 Watching workflow: $run_id"
+  gh run watch "$run_id" && osascript -e 'display notification "Workflow completed" with title "GitHub Actions"'
+}
+
 # peco
 peco-src () {
     local selected_dir=$(ghq list | peco --query "$LBUFFER")
