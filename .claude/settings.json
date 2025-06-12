@@ -1,7 +1,9 @@
 {
   "permissions": {
     "allow": [
-      "WebFetch"
+      "WebFetch",
+      "Bash(pnpm lint)",
+      "Bash(pnpm test)"
     ],
     "deny": []
   }
