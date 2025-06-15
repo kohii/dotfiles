@@ -101,6 +101,8 @@ alias teee='tee >(pbcopy)'
 alias python=python3
 alias pip=pip3
 
+alias yolo='claude --dangerously-skip-permissions'
+
 #======================================
 # Key Bindings
 #======================================
