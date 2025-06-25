@@ -11,3 +11,4 @@ Brewfile
 .config/karabiner/karabiner.json
 .tmux.conf
 .claude/settings.json
+.claude/commands
