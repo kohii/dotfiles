@@ -1,5 +1,4 @@
 .ideavimrc
-.mackup.cfg
 .gitconfig
 .gitignore_global
 .zshrc
