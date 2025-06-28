@@ -36,6 +36,39 @@
 	se = !git rev-list --all | xargs git grep -F
 	dmb = ! git branch --merged | grep -v \\* | grep -v -E '\\b(master|main|develop)\\b' | xargs -n 1 git branch -d
 
+    wt = worktree
+    wtl = worktree list
+    wta = worktree add
+    wtr = worktree remove
+    wtp = worktree prune
+
+    # Create worktree directory and add branch
+    wtab = "!f() { \
+        repo_name=$(basename \"$(git rev-parse --show-toplevel)\"); \
+        branch_name=\"$1\"; \
+        worktree_dir=\"../${repo_name}-worktree/${branch_name}\"; \
+        git worktree add -b \"$branch_name\" \"$worktree_dir\" origin/main; \
+        echo \"Created worktree: $worktree_dir\"; \
+    }; f"
+    
+    # Add existing branch
+    wtac = "!f() { \
+        repo_name=$(basename \"$(git rev-parse --show-toplevel)\"); \
+        branch_name=\"$1\"; \
+        worktree_dir=\"../${repo_name}-worktree/${branch_name}\"; \
+        git worktree add \"$worktree_dir\" origin/\"$branch_name\"; \
+        echo \"Created worktree: $worktree_dir\"; \
+    }; f"
+
+	# Remove worktree and branch
+	wtd = "!f() { \
+		repo_name=$(basename \"$(git rev-parse --show-toplevel)\"); \
+		branch_name=\"$1\"; \
+		worktree_dir=\"../${repo_name}-worktree/${branch_name}\"; \
+		git worktree remove \"$worktree_dir\" && git branch -D \"$branch_name\"; \
+		echo \"Removed worktree: $worktree_dir\"; \
+	}; f"
+
 [user]
 	useConfigOnly = true
 	email = kohii.tokyo@gmail.com
