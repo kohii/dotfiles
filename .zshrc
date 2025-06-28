@@ -109,6 +109,7 @@ alias yolo='claude --dangerously-skip-permissions'
 
 # bindkey '^R' history-incremental-pattern-search-backward
 bindkey '^]' peco-src
+bindkey '^W' peco-worktree
 bindkey '^A' beginning-of-line
 bindkey '^E' end-of-line
 
@@ -165,6 +166,49 @@ peco-src () {
     zle clear-screen
 }
 zle -N peco-src
+
+# peco worktree switcher
+peco-worktree () {
+    # Check if we're in a git repository
+    if ! git rev-parse --git-dir > /dev/null 2>&1; then
+        echo "Not in a git repository"
+        zle clear-screen
+        return 1
+    fi
+    
+    # Get list of worktrees with formatted output for peco
+    local worktree_list=$(git worktree list --porcelain | awk '
+        /^worktree / { path = substr($0, 10) }
+        /^branch / { branch = substr($0, 8) }
+        /^HEAD / { branch = "HEAD" }
+        /^$/ { 
+            if (path != "") {
+                if (branch == "") branch = "(bare)"
+                printf "%s [%s]\n", path, branch
+                path = ""
+                branch = ""
+            }
+        }
+        END {
+            if (path != "") {
+                if (branch == "") branch = "(bare)"
+                printf "%s [%s]\n", path, branch
+            }
+        }
+    ')
+    
+    # Use peco to select a worktree
+    local selected_worktree=$(echo "$worktree_list" | peco --query "$LBUFFER")
+    
+    if [ -n "$selected_worktree" ]; then
+        # Extract the path (everything before the last [branch])
+        local selected_path=$(echo "$selected_worktree" | sed 's/ \[[^]]*\]$//')
+        BUFFER="cd \"${selected_path}\""
+        zle accept-line
+    fi
+    zle clear-screen
+}
+zle -N peco-worktree
 
 #======================================
 # Third-party Settings
