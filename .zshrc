@@ -101,6 +101,7 @@ alias teee='tee >(pbcopy)'
 alias python=python3
 alias pip=pip3
 
+alias claude="~/.claude/local/claude"
 alias yolo='claude --dangerously-skip-permissions'
 
 #======================================
@@ -265,4 +266,5 @@ export CREATE_CLOUDFLARE_TELEMETRY_DISABLED=1
 
 # Import local zshrc if it exists
 [[ -f ~/.zshrc_local ]] && source ~/.zshrc_local
+
 
