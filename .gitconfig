@@ -47,7 +47,7 @@
         repo_name=$(basename \"$(git rev-parse --show-toplevel)\"); \
         branch_name=\"$1\"; \
         worktree_dir=\"../${repo_name}-worktree/${branch_name}\"; \
-        git worktree add -b \"$branch_name\" \"$worktree_dir\" origin/main; \
+        git worktree add -b \"$branch_name\" \"$worktree_dir\"; \
         echo \"Created worktree: $worktree_dir\"; \
     }; f"
     
