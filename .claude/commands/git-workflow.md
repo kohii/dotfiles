@@ -16,3 +16,4 @@ Branch name: $ARGUMENTS
 PR content:
 
 - If the repository's organization is `bw-company`, write the title and description in Japanese. 
+- Run linter before committing.
