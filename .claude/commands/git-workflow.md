@@ -13,3 +13,6 @@ Branch name: $ARGUMENTS
   - If the repository's organization is `bw-company`, use prefix `kohii/`.
 - Otherwise, use the current branch. (No need to create a new branch.)
 
+PR content:
+
+- If the repository's organization is `bw-company`, write the title and description in Japanese. 
