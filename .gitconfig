@@ -49,6 +49,11 @@
         worktree_dir=\"../${repo_name}-worktree/${branch_name}\"; \
         git worktree add -b \"$branch_name\" \"$worktree_dir\"; \
         echo \"Created worktree: $worktree_dir\"; \
+        cd \"$worktree_dir\"; \
+        if [ -f \"setup-project.sh\" ]; then \
+            echo \"Running setup-project.sh...\"; \
+            ./setup-project.sh; \
+        fi; \
     }; f"
     
     # Add existing branch
@@ -58,6 +63,11 @@
         worktree_dir=\"../${repo_name}-worktree/${branch_name}\"; \
         git worktree add \"$worktree_dir\" origin/\"$branch_name\"; \
         echo \"Created worktree: $worktree_dir\"; \
+        cd \"$worktree_dir\"; \
+        if [ -f \"setup-project.sh\" ]; then \
+            echo \"Running setup-project.sh...\"; \
+            ./setup-project.sh; \
+        fi; \
     }; f"
 
 	# Remove worktree and branch
