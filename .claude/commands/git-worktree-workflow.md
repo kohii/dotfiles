@@ -8,7 +8,9 @@ $ARGUMENTS
   - Choose the branch name based on the user's request.
 3. Switch to the worktree directory.
 4. Make changes in the worktree directory.
+  - It is recommended to write failing tests first when fixing bugs.
 5. Commit changes.
+  - If it becomes a long task, you should commit changes in small steps so that you can revert to the previous state if needed.
 6. Push changes.
 7. Create a pull request.
 8. Monitor GitHub Actions checks.
