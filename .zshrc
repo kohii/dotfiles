@@ -211,6 +211,61 @@ peco-worktree () {
 }
 zle -N peco-worktree
 
+# peco worktree delete - select and remove worktree with git wtd
+gwtd () {
+    # Check if we're in a git repository
+    if ! git rev-parse --git-dir > /dev/null 2>&1; then
+        echo "Not in a git repository"
+        return 1
+    fi
+    
+    # Get list of worktrees with formatted output for peco (excluding main worktree)
+    local worktree_list=$(git worktree list --porcelain | awk '
+        /^worktree / { path = substr($0, 10) }
+        /^branch / { branch = substr($0, 8) }
+        /^HEAD / { branch = "HEAD" }
+        /^bare / { is_bare = 1 }
+        /^$/ { 
+            if (path != "" && !is_bare && branch != "HEAD") {
+                if (branch == "") branch = "(detached)"
+                printf "%s [%s]\n", path, branch
+            }
+            path = ""
+            branch = ""
+            is_bare = 0
+        }
+        END {
+            if (path != "" && !is_bare && branch != "HEAD") {
+                if (branch == "") branch = "(detached)"
+                printf "%s [%s]\n", path, branch
+            }
+        }
+    ')
+    
+    if [ -z "$worktree_list" ]; then
+        echo "No worktrees available to delete"
+        return 1
+    fi
+    
+    # Use peco to select a worktree to delete
+    local selected_worktree=$(echo "$worktree_list" | peco --prompt="Select worktree to delete: ")
+    
+    if [ -n "$selected_worktree" ]; then
+        # Extract the branch name (everything between [ and ])
+        local branch_name=$(echo "$selected_worktree" | sed -n 's/.*\[\(.*\)\]$/\1/p')
+        
+        # Remove refs/heads/ prefix if present
+        branch_name=$(echo "$branch_name" | sed 's|^refs/heads/||')
+        
+        if [ -n "$branch_name" ] && [ "$branch_name" != "(detached)" ]; then
+            echo "Deleting worktree for branch: $branch_name"
+            git wtd "$branch_name"
+        else
+            echo "Cannot delete detached or invalid worktree"
+        fi
+    fi
+}
+
 #======================================
 # Third-party Settings
 #======================================
