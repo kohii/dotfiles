@@ -31,12 +31,16 @@
       "Bash(gh run:*)",
       "Bash(jq:*)",
       "Bash(sed:*)",
-      "mcp__playwright__browser_navigate"
+      "mcp__playwright__browser_navigate",
+      "mcp__serena"
     ],
-    "deny": [],
+    "deny": [
+      "Bash(rm -rf /)",
+      "Bash(rm -rf ~)"
+    ],
     "defaultMode": "acceptEdits"
   },
   "feedbackSurveyState": {
-    "lastShownTime": 1753948006973
+    "lastShownTime": 1753969782443
   }
 }
