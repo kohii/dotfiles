@@ -104,6 +104,9 @@ alias pip=pip3
 alias claude="~/.claude/local/claude"
 alias yolo='claude --dangerously-skip-permissions'
 
+alias serena='uvx --from git+https://github.com/oraios/serena serena'
+alias serena-index='serena project index'
+
 #======================================
 # Key Bindings
 #======================================

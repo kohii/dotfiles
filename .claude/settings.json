@@ -1,6 +1,9 @@
 {
+  "env": {
+    "BASH_DEFAULT_TIMEOUT_MS": "600000",
+    "BASH_MAX_TIMEOUT_MS": "1200000"
+  },
   "permissions": {
-    "defaultMode": "acceptEdits",
     "allow": [
       "WebFetch",
       "Bash(pnpm lint:*)",
@@ -30,10 +33,10 @@
       "Bash(sed:*)",
       "mcp__playwright__browser_navigate"
     ],
-    "deny": []
+    "deny": [],
+    "defaultMode": "acceptEdits"
   },
-  "env": {
-    "BASH_DEFAULT_TIMEOUT_MS": "600000",
-    "BASH_MAX_TIMEOUT_MS": "1200000"
+  "feedbackSurveyState": {
+    "lastShownTime": 1753948006973
   }
 }
