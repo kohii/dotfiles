@@ -315,6 +315,9 @@ precmd () {print -Pn "\e]0;%~\a"}
 # disable cloudflare telemetry
 export CREATE_CLOUDFLARE_TELEMETRY_DISABLED=1
 
+# disable turbo telemetry
+export TURBO_TELEMETRY_DISABLED=1
+
 #======================================
 # Local Settings
 #======================================
