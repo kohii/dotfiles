@@ -19,6 +19,8 @@
 	br = branch
 	ci = commit
 	cm = commit -m
+  cn = commit --no-verify
+  cnm = commit --no-verify -m
 	st = status -sb
 	cp = cherry-pick
 	sw = switch
