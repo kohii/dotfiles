@@ -107,6 +107,8 @@ alias yolo='claude --dangerously-skip-permissions'
 alias serena='uvx --from git+https://github.com/oraios/serena serena'
 alias serena-index='serena project index'
 
+alias cckiro='npx @pimzino/claude-code-spec-workflow@latest'
+
 #======================================
 # Key Bindings
 #======================================
