@@ -12,3 +12,4 @@ Brewfile
 .claude/CLAUDE.md
 .claude/settings.json
 .claude/commands
+.config/nix/nix.conf
