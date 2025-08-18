@@ -108,6 +108,7 @@ alias serena='uvx --from git+https://github.com/oraios/serena serena'
 alias serena-index='serena project index'
 
 alias cckiro='npx @pimzino/claude-code-spec-workflow@latest'
+alias ccdashboard='npx claude-code-templates@latest'
 
 #======================================
 # Key Bindings

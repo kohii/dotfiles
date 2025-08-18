@@ -33,7 +33,8 @@
       "Bash(jq:*)",
       "Bash(sed:*)",
       "mcp__playwright",
-      "mcp__serena"
+      "mcp__serena",
+      "Read(~/Library/Application Support/CleanShot/media/**)"
     ],
     "deny": [
       "Bash(rm -rf /)",
