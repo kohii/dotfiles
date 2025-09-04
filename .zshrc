@@ -116,7 +116,7 @@ alias ccdashboard='npx claude-code-templates@latest'
 
 # bindkey '^R' history-incremental-pattern-search-backward
 bindkey '^]' peco-src
-bindkey '^W' peco-worktree
+bindkey '^|' peco-worktree
 bindkey '^A' beginning-of-line
 bindkey '^E' end-of-line
 
