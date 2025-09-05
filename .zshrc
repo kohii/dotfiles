@@ -103,6 +103,7 @@ alias pip=pip3
 
 alias claude="~/.claude/local/claude"
 alias yolo='claude --dangerously-skip-permissions'
+alias claude-old="npx @anthropic-ai/claude-code@1.0.24"
 
 alias serena='uvx --from git+https://github.com/oraios/serena serena'
 alias serena-index='serena project index'
