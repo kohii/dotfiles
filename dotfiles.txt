@@ -14,3 +14,4 @@ Brewfile
 .claude/commands
 .claude/statusline.sh
 .config/nix/nix.conf
+.gemini/settings.json
