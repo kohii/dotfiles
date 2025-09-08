@@ -1,5 +1,4 @@
 {
-  "$schema": "https://json.schemastore.org/claude-code-settings.json",
   "env": {
     "BASH_DEFAULT_TIMEOUT_MS": "600000",
     "BASH_MAX_TIMEOUT_MS": "1200000",
@@ -51,12 +50,13 @@
     ],
     "defaultMode": "acceptEdits"
   },
+  "model": "sonnet",
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
   "statusLine": {
     "type": "command",
     "command": "~/.claude/statusline.sh"
   },
   "feedbackSurveyState": {
     "lastShownTime": 1754089603222
-  },
-  "model": "opusplan"
+  }
 }

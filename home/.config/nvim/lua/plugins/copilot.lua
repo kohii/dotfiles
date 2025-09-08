@@ -1,7 +1,8 @@
 local plugins = {
   "github/copilot.vim",
   lazy = false,
-  enabled = not vim.g.vscode,
+  -- enabled = not vim.g.vscode,
+  enabled = false,
   config = function()  -- Mapping tab is already used by NvChad
     vim.g.copilot_no_tab_map = true;
     vim.g.copilot_assume_mapped = true;

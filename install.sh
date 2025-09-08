@@ -1,7 +1,10 @@
 #!/bin/bash
 
-dotfiles_dir=~/dotfiles
-dotfiles_list_file=~/dotfiles/dotfiles.txt
+# Repository and link source directories
+script_dir="$(cd "$(dirname "$0")" && pwd)"
+repo_dir="$script_dir"
+link_src_dir="$repo_dir/home"
+dotfiles_list_file="$repo_dir/dotfiles.txt"
 
 ensure_parent_directory_exists() {
     local target=$1
@@ -34,7 +37,8 @@ create_symlink() {
 
 install_dotfiles() {
     while IFS= read -r file; do
-        source="$dotfiles_dir/$file"
+        [ -z "$file" ] && continue
+        source="$link_src_dir/$file"
         target="$HOME/$file"
         create_symlink "$source" "$target"
     done < "$dotfiles_list_file"
@@ -56,7 +60,7 @@ load_launchctl_job() {
 install_launchd() {
     files=("tokyo.kohii.gitfetch.plist")
     for file in "${files[@]}"; do
-        source="$dotfiles_dir/launchd/$file"
+        source="$repo_dir/launchd/$file"
         target="$HOME/Library/LaunchAgents/$file"
         create_symlink "$source" "$target"
         load_launchctl_job "$file"
@@ -72,8 +76,8 @@ fi
 
 install_launchd
 
-chmod +x ./configure_macos.sh
-./configure_macos.sh
+chmod +x "$repo_dir/configure_macos.sh"
+"$repo_dir/configure_macos.sh"
 
-brew bundle
-
+# Use Brewfile from the relocated dotfiles under home/
+brew bundle --file "$link_src_dir/Brewfile"
