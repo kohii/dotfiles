@@ -1,0 +1,37 @@
+#!/bin/bash
+# Manages AGENTS.md and CLAUDE.md to standardize on AGENTS.md
+# while maintaining compatibility via a symlink.
+
+set -e
+
+# Step 1: Ensure AGENTS.md exists.
+# If AGENTS.md doesn't exist, rename CLAUDE.md to AGENTS.md.
+if [ ! -f "AGENTS.md" ]; then
+  echo "AGENTS.md not found."
+  if [ -f "CLAUDE.md" ] && [ ! -L "CLAUDE.md" ]; then
+    echo "Renaming CLAUDE.md to AGENTS.md."
+    mv "CLAUDE.md" "AGENTS.md"
+  else
+    echo "Error: Neither AGENTS.md nor a renameable CLAUDE.md found."
+    exit 1
+  fi
+fi
+
+# Step 2: Make CLAUDE.md a symlink.
+# If CLAUDE.md is a real file or a symlink, remove it first.
+if [ -L "CLAUDE.md" ]; then
+  echo "Removing existing symlink CLAUDE.md."
+  rm "CLAUDE.md"
+elif [ -f "CLAUDE.md" ]; then
+  # This case should not be reached if the logic above is correct,
+  # but as a safeguard:
+  echo "Removing unexpected regular file CLAUDE.md."
+  rm "CLAUDE.md"
+fi
+
+# Create the symlink from CLAUDE.md to AGENTS.md.
+echo "Creating symlink: CLAUDE.md -> AGENTS.md"
+ln -s "AGENTS.md" "CLAUDE.md"
+
+echo "Setup complete. Final state:"
+ls -l AGENTS.md CLAUDE.md

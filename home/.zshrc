@@ -21,6 +21,8 @@ eval "$(sheldon source)"
 # Default text editor
 export EDITOR=nvim
 
+export PATH="$HOME/dotfiles/bin:$PATH"
+
 #======================================
 # Options
 #======================================
