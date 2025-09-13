@@ -46,7 +46,7 @@
     "deny": [
       "Bash(rm -rf /)",
       "Bash(rm -rf ~)",
-      "Bash(sudo *)"
+      "Bash(sudo :*)"
     ],
     "defaultMode": "acceptEdits"
   },
@@ -56,6 +56,7 @@
     "type": "command",
     "command": "~/.claude/statusline.sh"
   },
+  "includeCoAuthoredBy": false,
   "feedbackSurveyState": {
     "lastShownTime": 1754089603222
   }
