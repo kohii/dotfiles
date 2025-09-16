@@ -142,6 +142,17 @@ dotfilesUpdate() {
   )
 }
 
+cdx() {
+  if [[ "$1" == "update" ]]; then
+    npm install -g @openai/codex@latest
+  else
+    codex \
+      --full-auto \
+      -c model_reasoning_summary_format=experimental \
+      --search "$@"
+  fi
+}
+
 ghwatch() {
   local input="$1"
 
