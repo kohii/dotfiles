@@ -1,0 +1,27 @@
+#!/bin/bash
+
+# gemini-websearch - Web search using gemini CLI from a neutral directory
+# Usage: gemini-websearch <search query>
+
+if [ $# -eq 0 ]; then
+    echo "Usage: gemini-websearch <search query>"
+    echo "Example: gemini-websearch latest trends in AI"
+    exit 1
+fi
+
+# Store current directory
+original_dir="$(pwd)"
+
+# Create a temporary directory and move there to avoid gemini reading current directory files
+temp_dir=$(mktemp -d)
+cd "$temp_dir" || exit 1
+
+# Join all arguments into a single search query
+search_query="$*"
+
+# Run gemini with web search prompt
+gemini -p "Web Search: $search_query"
+
+# Clean up and return to original directory
+rm -rf "$temp_dir"
+cd "$original_dir" || exit 1

@@ -23,6 +23,7 @@
       "Bash(npm run lint:*)",
       "Bash(npm why:*)",
       "Bash(npm info:*)",
+      "Bash(gemini-websearch:*)",
       "Bash(git status:*)",
       "Bash(git checkout:*)",
       "Bash(git add:*)",
