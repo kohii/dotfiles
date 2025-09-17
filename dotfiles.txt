@@ -11,6 +11,7 @@ Brewfile
 .tmux.conf
 .claude/CLAUDE.md
 .claude/settings.json
+.claude/agents
 .claude/commands
 .claude/statusline.sh
 .config/nix/nix.conf
