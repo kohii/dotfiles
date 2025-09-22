@@ -1,6 +1,6 @@
 ---
 allowed-tools: Bash(git diff:*), Bash(git log:*), Bash(git status:*), Bash(git branch:*)
-argument-hint: [branch1] [branch2]
+argument-hint: <branch>
 description: Git差分を構造化レポートとして生成
 ---
 
@@ -8,14 +8,14 @@ description: Git差分を構造化レポートとして生成
 
 ## Context
 - 現在のブランチ: !`git branch --show-current`
-- 差分対象: !`if [ -z "$1" ]; then echo "HEAD"; elif [ -z "$2" ]; then echo "$(git branch --show-current)..$1"; else echo "$1..$2"; fi`
-- 変更ファイル数: !`git diff $(if [ -z "$1" ]; then echo "HEAD"; elif [ -z "$2" ]; then echo "$1"; else echo "$1..$2"; fi) --stat | tail -1`
+- 差分対象: main..$1
+- 変更ファイル数: !`git diff --stat | tail -1`
 
 ## Task
 以下の差分を解析し、簡潔な構造化レポート（report.md）を生成：
 
-!`git diff $(if [ -z "$1" ]; then echo "HEAD"; elif [ -z "$2" ]; then echo "$1"; else echo "$1..$2"; fi) --name-status`
-!`git diff $(if [ -z "$1" ]; then echo "HEAD"; elif [ -z "$2" ]; then echo "$1"; else echo "$1..$2"; fi)`
+!`git diff main..$1 --name-status`
+!`git diff main..$1`
 
 ### レポート要件
 1. **概要** (1-2行): 変更の目的・影響を端的に
