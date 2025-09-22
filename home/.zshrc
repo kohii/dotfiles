@@ -113,6 +113,9 @@ alias serena-index='serena project index'
 alias cckiro='npx @pimzino/claude-code-spec-workflow@latest'
 alias ccdashboard='npx claude-code-templates@latest'
 
+alias spec-kit='uvx --from git+https://github.com/github/spec-kit.git'
+alias spec-kit-init='spec-kit specify init'
+
 #======================================
 # Key Bindings
 #======================================
