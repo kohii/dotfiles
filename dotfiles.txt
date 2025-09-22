@@ -4,6 +4,7 @@
 .zshrc
 .config/nvim
 Brewfile
+.codex/AGENTS.md
 .config/starship.toml
 .config/kitty/kitty.conf
 .config/sheldon/plugins.toml
