@@ -1,0 +1,24 @@
+#!/bin/bash
+
+set -euo pipefail
+
+input="${1:-}"
+
+if [ -z "$input" ]; then
+    echo "Usage: ghwatch <run-id or GitHub Actions URL>"
+    exit 1
+fi
+
+# Extract run-id from URL if provided
+if [[ "$input" =~ /actions/runs/([0-9]+) ]]; then
+    run_id="${BASH_REMATCH[1]}"
+else
+    run_id="$input"
+fi
+
+echo "🔍 Watching workflow: $run_id"
+if gh run watch "$run_id" --exit-status; then
+    osascript -e 'display notification "Workflow completed ✅" with title "GitHub Actions"'
+else
+    osascript -e 'display notification "Workflow failed ❌" with title "GitHub Actions"'
+fi
