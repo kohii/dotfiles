@@ -20,7 +20,7 @@ cd "$temp_dir" || exit 1
 search_query="$*"
 
 # Run gemini with web search prompt
-gemini -p "Web Search: $search_query"
+gemini --sandbox -p "Web Search: $search_query"
 
 # Clean up and return to original directory
 rm -rf "$temp_dir"
