@@ -1,0 +1,192 @@
+#!/bin/bash
+
+set -euo pipefail
+
+usage() {
+    echo "Usage: $(basename "$0") <pr-number|pr-url|owner/repo#number>" >&2
+    exit 1
+}
+
+require_cmd() {
+    local cmd="$1"
+    if ! command -v "$cmd" >/dev/null 2>&1; then
+        echo "Error: required command '$cmd' not found in PATH" >&2
+        exit 1
+    fi
+}
+
+input="${1:-}"
+if [ -z "$input" ]; then
+    usage
+fi
+
+require_cmd gh
+require_cmd jq
+
+pr_selector=""
+repo=""
+owner=""
+repo_name=""
+
+if [[ "$input" =~ ^https?://github\.com/([^/]+)/([^/]+)/pull/([0-9]+)(/.*)?$ ]]; then
+    owner="${BASH_REMATCH[1]}"
+    repo_name="${BASH_REMATCH[2]}"
+    pr_selector="${BASH_REMATCH[3]}"
+elif [[ "$input" =~ ^([^/]+)/([^#]+)#([0-9]+)$ ]]; then
+    owner="${BASH_REMATCH[1]}"
+    repo_name="${BASH_REMATCH[2]}"
+    pr_selector="${BASH_REMATCH[3]}"
+elif [[ "$input" =~ ^[0-9]+$ ]]; then
+    pr_selector="$input"
+else
+    echo "Error: could not parse pull request identifier '$input'" >&2
+    usage
+fi
+
+repo_arg=()
+if [ -n "$owner" ] && [ -n "$repo_name" ]; then
+    repo="$owner/$repo_name"
+    repo_arg=(--repo "$repo")
+fi
+
+if ! pr_json=$(gh pr view "$pr_selector" "${repo_arg[@]}" --json number,isDraft,url 2>/dev/null); then
+    echo "Error: failed to fetch pull request details via gh" >&2
+    exit 1
+fi
+
+pr_number=$(echo "$pr_json" | jq -r '.number // empty')
+is_draft=$(echo "$pr_json" | jq -r '.isDraft // false')
+pr_url=$(echo "$pr_json" | jq -r '.url // empty')
+
+if [ -z "$pr_number" ] || [ -z "$pr_url" ]; then
+    echo "Error: unexpected response from gh pr view" >&2
+    exit 1
+fi
+
+if [ "$is_draft" != "true" ]; then
+    echo "PR $pr_url is not a draft; nothing to do." >&2
+    exit 0
+fi
+
+if [ -z "$repo" ]; then
+    if [[ "$pr_url" =~ github\.com/([^/]+)/([^/]+)/pull/ ]]; then
+        owner="${BASH_REMATCH[1]}"
+        repo_name="${BASH_REMATCH[2]}"
+        repo="$owner/$repo_name"
+        repo_arg=(--repo "$repo")
+    else
+        echo "Error: unable to determine repository from $pr_url" >&2
+        exit 1
+    fi
+fi
+
+pr_label="$repo#$pr_number"
+
+echo "Watching GitHub Actions checks for draft PR $pr_label"
+echo "Target: $pr_url"
+
+query_template=$(cat <<'GRAPHQL'
+query($owner: String!, $name: String!, $number: Int!) {
+  repository(owner: $owner, name: $name) {
+    pullRequest(number: $number) {
+      isDraft
+      commits(last: 1) {
+        nodes {
+          commit {
+            oid
+            statusCheckRollup {
+              state
+              contexts(first: 100) {
+                totalCount
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+GRAPHQL
+)
+
+poll_interval="${GH_READY_POLL_INTERVAL:-15}"
+timeout="${GH_READY_TIMEOUT:-0}"
+start_ts=$(date +%s)
+last_sha=""
+last_state=""
+last_count=-1
+
+while true; do
+    response=$(gh api graphql -f query="$query_template" -F owner="$owner" -F name="$repo_name" -F number="$pr_number")
+
+    current_is_draft=$(echo "$response" | jq -r '.data.repository.pullRequest.isDraft // false')
+    commit_exists=$(echo "$response" | jq -r '.data.repository.pullRequest.commits.nodes | length')
+
+    if [ "$current_is_draft" != "true" ]; then
+        echo "PR is no longer a draft; exiting without changes." >&2
+        exit 0
+    fi
+
+    if [ "$commit_exists" -eq 0 ]; then
+        echo "No commits found on PR; waiting..."
+        sleep "$poll_interval"
+        continue
+    fi
+
+    current_sha=$(echo "$response" | jq -r '.data.repository.pullRequest.commits.nodes[0].commit.oid // empty')
+    rollup_state=$(echo "$response" | jq -r '.data.repository.pullRequest.commits.nodes[0].commit.statusCheckRollup.state // "UNKNOWN"')
+    context_count=$(echo "$response" | jq -r '.data.repository.pullRequest.commits.nodes[0].commit.statusCheckRollup.contexts.totalCount // 0')
+
+    if [ -z "$current_sha" ]; then
+        echo "Unable to determine head commit; aborting." >&2
+        exit 1
+    fi
+
+    if [ "$current_sha" != "$last_sha" ]; then
+        echo "→ Tracking head commit $current_sha"
+        last_sha="$current_sha"
+        last_state=""
+        last_count=-1
+    fi
+
+    if [ "$rollup_state" != "$last_state" ] || [ "$context_count" -ne "$last_count" ]; then
+        echo "   status: $rollup_state (${context_count} checks)"
+        last_state="$rollup_state"
+        last_count="$context_count"
+    fi
+
+    case "$rollup_state" in
+        SUCCESS)
+            if [ "$context_count" -eq 0 ]; then
+                echo "No status checks reported success yet; continuing to wait."
+            else
+                echo "All checks succeeded for $current_sha."
+                break
+            fi
+            ;;
+        FAILURE|ERROR)
+            echo "Checks reported $rollup_state; not marking PR ready." >&2
+            exit 1
+            ;;
+        *)
+            ;;
+    esac
+
+    if [ "$timeout" -gt 0 ]; then
+        now=$(date +%s)
+        elapsed=$((now - start_ts))
+        if [ "$elapsed" -ge "$timeout" ]; then
+            echo "Timed out after ${elapsed}s waiting for checks to succeed." >&2
+            exit 1
+        fi
+    fi
+
+    sleep "$poll_interval"
+done
+
+if ! gh pr ready "$pr_selector" "${repo_arg[@]}" >/dev/null; then
+    echo "Failed to mark PR ready for review via gh." >&2
+    exit 1
+fi
+
+echo "✅ Marked $pr_label as Ready for Review."
