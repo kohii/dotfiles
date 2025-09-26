@@ -149,7 +149,7 @@ cdx() {
   if [[ "$1" == "update" ]]; then
     npm install -g @openai/codex@latest
   else
-    codex \
+    RUSTC_WRAPPER= codex \
       --full-auto \
       -c model_reasoning_summary_format=experimental \
       --search "$@"
