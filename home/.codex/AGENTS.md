@@ -1,2 +1,3 @@
+- Always respond in the same language the user is using.
 - When you need to perform restricted operations such as network access, you should give it a try.
 - Feel free to use `gemini-websearch` for web search

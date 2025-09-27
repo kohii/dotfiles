@@ -1,2 +1,2 @@
-## Tools and Preferences
+- Always respond in the same language the user is using.
 - Feel free to use `gemini-websearch` for web search
