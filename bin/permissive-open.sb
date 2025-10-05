@@ -1,0 +1,47 @@
+(version 1)
+
+(allow default)
+
+(deny file-write*)
+(allow file-write*
+    ;; Note: (param "NAME") will be set to the value passed as -D NAME=VALUE at launch time
+
+    ;; Specify the project directory as TARGET_DIR
+    (subpath (param "TARGET_DIR"))
+
+    ;; Allow write access to git worktree directory
+    (subpath (string-append (param "TARGET_DIR") "-worktree"))
+
+    ;; Allow write access to locations other than the project directory
+    ;; Claude Code related
+    (regex (string-append "^" (param "HOME_DIR") "/.claude*"))
+    ;; Apparently records session information via Keychain
+    (subpath (string-append (param "HOME_DIR") "/Library/Keychains"))
+    ;; Keychain helper uses /private/var/folders/<id>/... locks
+    (subpath "/private/var/folders")
+
+    ;; Temporary files
+    (subpath "/tmp")
+    (subpath "/var/folders/sv")
+    (subpath (string-append (param "HOME_DIR") "/.cache"))
+    (subpath (string-append (param "HOME_DIR") "/Library/Caches"))
+
+    ;; Other tool-related paths
+    (subpath (string-append (param "HOME_DIR") "/.npm"))
+    (subpath (string-append (param "HOME_DIR") "/.pnpm-store"))
+    (subpath (string-append (param "HOME_DIR") "/Library/pnpm"))
+
+    ;; STDOUT and similar
+    (literal "/dev/stdout")
+    (literal "/dev/stderr")
+    (literal "/dev/null")
+    (literal "/dev/dtracehelper")
+    ;; Written this way to allow patterns like /dev/ttys000
+    ;; It may look like regex and glob are being confused, but apparently this is really how it needs to be written...
+    (regex #"^/dev/tty*")
+)
+
+(allow process-exec
+    ;; Needed so the Keychain helper /usr/bin/security (setuid) can run
+    (literal "/usr/bin/security")
+)
