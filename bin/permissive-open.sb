@@ -44,4 +44,6 @@
 (allow process-exec
     ;; Needed so the Keychain helper /usr/bin/security (setuid) can run
     (literal "/usr/bin/security")
+    ;; Needed for ps command (used by Homebrew shellenv and other tools)
+    (literal "/bin/ps")
 )
