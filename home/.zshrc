@@ -320,6 +320,14 @@ export CREATE_CLOUDFLARE_TELEMETRY_DISABLED=1
 # disable turbo telemetry
 export TURBO_TELEMETRY_DISABLED=1
 
+# docker
+export PATH="$PATH:/Applications/Docker.app/Contents/Resources/bin"
+# The following lines have been added by Docker Desktop to enable Docker CLI completions.
+fpath=(/Users/kohei/.docker/completions $fpath)
+autoload -Uz compinit
+compinit
+# End of Docker CLI completions
+
 #======================================
 # Local Settings
 #======================================
