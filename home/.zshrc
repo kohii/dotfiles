@@ -118,6 +118,8 @@ alias spec-kit-init='spec-kit specify init'
 
 alias claude-sb='sandbox-exec -f ~/dotfiles/bin/permissive-open.sb -D TARGET_DIR="$(pwd)" -D HOME_DIR="$HOME" ~/.claude/local/claude --dangerously-skip-permissions'
 
+alias codex='bun add -g @openai/codex@latest && codex'
+
 #======================================
 # Key Bindings
 #======================================
@@ -145,17 +147,6 @@ dotfilesUpdate() {
     git pull --ff-only
     ./install.sh
   )
-}
-
-cdx() {
-  if [[ "$1" == "update" ]]; then
-    npm install -g @openai/codex@latest
-  else
-    RUSTC_WRAPPER= codex \
-      --full-auto \
-      -c model_reasoning_summary_format=experimental \
-      --search "$@"
-  fi
 }
 
 # peco
