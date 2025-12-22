@@ -59,7 +59,7 @@
     ],
     "defaultMode": "acceptEdits"
   },
-  "model": "opusplan",
+  "model": "opus",
   "statusLine": {
     "type": "command",
     "command": "~/.claude/statusline.sh"
