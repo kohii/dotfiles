@@ -120,6 +120,14 @@ alias claude-sb='sandbox-exec -f ~/dotfiles/bin/permissive-open.sb -D TARGET_DIR
 
 alias codex='bun add -g @openai/codex@latest && codex'
 
+alias ei="eza --icons --git"
+alias ea="eza -la --icons --git"
+alias ee="eza -aahl --icons --git"
+alias et="eza -T -L 3 -a -I 'node_modules|.git|.cache' --icons"
+alias ls=ei
+alias la=ea
+alias ll=ee
+
 #======================================
 # Key Bindings
 #======================================
@@ -333,3 +341,6 @@ if [ -f '/opt/homebrew/share/google-cloud-sdk/path.zsh.inc' ]; then . '/opt/home
 
 # The next line enables shell command completion for gcloud.
 if [ -f '/opt/homebrew/share/google-cloud-sdk/completion.zsh.inc' ]; then . '/opt/homebrew/share/google-cloud-sdk/completion.zsh.inc'; fi
+
+# Added by Antigravity
+export PATH="/Users/kohei/.antigravity/antigravity/bin:$PATH"
