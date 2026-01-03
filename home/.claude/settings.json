@@ -53,9 +53,11 @@
       "Read(~/Library/Application Support/CleanShot/media/**)"
     ],
     "deny": [
-      "Bash(rm -rf /)",
-      "Bash(rm -rf ~)",
-      "Bash(sudo :*)"
+      "Read(**/.env)",
+      "Read(~/.aws/**)",
+      "Read(~/.ssh/**)",
+      "Bash(sudo:*)",
+      "Bash(rm -rf /*)"
     ],
     "defaultMode": "acceptEdits"
   },
@@ -66,5 +68,14 @@
   },
   "feedbackSurveyState": {
     "lastShownTime": 1754089603222
+  },
+  "sandbox": {
+    "enabled": true,
+    "autoAllowBashIfSandboxed": true,
+    "excludedCommands": ["docker"],
+    "allowUnsandboxedCommands": false,
+    "network": {
+      "allowLocalBinding": true
+    }
   }
 }
