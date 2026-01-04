@@ -288,6 +288,14 @@ export PATH="$BUN_INSTALL/bin:$PATH"
 ## bun completions
 [ -s "~/.bun/_bun" ] && source "~/.bun/_bun"
 
+# pnpm
+export PNPM_HOME="/Users/kohei/Library/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end
+
 # hstr
 alias hh=hstr                    # hh to be alias for hstr
 export HSTR_CONFIG=hicolor       # get more colors
@@ -344,3 +352,4 @@ if [ -f '/opt/homebrew/share/google-cloud-sdk/completion.zsh.inc' ]; then . '/op
 
 # Added by Antigravity
 export PATH="/Users/kohei/.antigravity/antigravity/bin:$PATH"
+
