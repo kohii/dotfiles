@@ -22,7 +22,6 @@
       "WebFetch(domain:npmjs.com)",
       "WebFetch(domain:github.com)",
       "WebFetch(domain:crates.io)",
-      "WebSearch(**)",
       "Bash(pnpm lint:*)",
       "Bash(pnpm test:*)",
       "Bash(pnpm build:*)",
