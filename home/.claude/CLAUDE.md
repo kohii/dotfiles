@@ -14,3 +14,5 @@
 - Add/update tests when you implement pure functions
 - If a unit test fails, think about the ideal behavior and align with it, instead of modifying the implementation and tests just to make the results add up
 
+## Tips
+The Bash tool runs in a sandbox, so file access and network connections may result in errors. In such situations, please consult the user for instructions.
