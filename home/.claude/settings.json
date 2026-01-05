@@ -22,6 +22,9 @@
       "WebFetch(domain:npmjs.com)",
       "WebFetch(domain:github.com)",
       "WebFetch(domain:crates.io)",
+      "Read(~/.ssh/known_hosts)",
+      "Read(~/.ssh/config)",
+      "Read(~/.ssh/id_*)",
       "Bash(pnpm lint:*)",
       "Bash(pnpm test:*)",
       "Bash(pnpm build:*)",
@@ -42,9 +45,8 @@
       "Bash(git branch:*)",
       "Bash(git log:*)",
       "Bash(git diff:*)",
-      "Bash(git reset:*)",
       "Bash(git stash:*)",
-      "Bash(git remote:*)",
+      "Bash(git remote -v:*)",
       "Bash(git describe:*)",
       "Bash(gh pr:*)",
       "Bash(gh workflow:*)",
@@ -76,7 +78,7 @@
   "sandbox": {
     "enabled": true,
     "autoAllowBashIfSandboxed": true,
-    "excludedCommands": ["docker"],
+    "excludedCommands": ["docker", "git"],
     "allowUnsandboxedCommands": false,
     "network": {
       "allowLocalBinding": true
