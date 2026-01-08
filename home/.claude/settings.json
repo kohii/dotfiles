@@ -72,16 +72,20 @@
     "type": "command",
     "command": "~/.claude/statusline.sh"
   },
-  "feedbackSurveyState": {
-    "lastShownTime": 1754089603222
-  },
   "sandbox": {
     "enabled": true,
     "autoAllowBashIfSandboxed": true,
-    "excludedCommands": ["docker", "git"],
     "allowUnsandboxedCommands": false,
     "network": {
       "allowLocalBinding": true
-    }
-  }
+    },
+    "excludedCommands": [
+      "docker",
+      "git"
+    ]
+  },
+  "feedbackSurveyState": {
+    "lastShownTime": 1754089603222
+  },
+  "language": "Japanese"
 }
