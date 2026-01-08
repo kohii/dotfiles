@@ -54,9 +54,11 @@
       "Bash(gh api:*)",
       "Bash(jq:*)",
       "Bash(sed:*)",
+      "Bash(./gradlew:*)",
       "mcp__playwright",
       "mcp__serena",
-      "Read(~/Library/Application Support/CleanShot/media/**)"
+      "Read(~/Library/Application Support/CleanShot/media/**)",
+      "Edit(~/.gradle/**)",
     ],
     "deny": [
       "Read(**/.env)",
