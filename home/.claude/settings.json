@@ -58,7 +58,7 @@
       "mcp__playwright",
       "mcp__serena",
       "Read(~/Library/Application Support/CleanShot/media/**)",
-      "Edit(~/.gradle/**)",
+      "Edit(~/.gradle/**)"
     ],
     "deny": [
       "Read(**/.env)",
