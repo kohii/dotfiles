@@ -75,6 +75,7 @@
     "type": "command",
     "command": "~/.claude/statusline.sh"
   },
+  "language": "Japanese",
   "sandbox": {
     "enabled": true,
     "autoAllowBashIfSandboxed": true,
@@ -88,6 +89,5 @@
   },
   "feedbackSurveyState": {
     "lastShownTime": 1754089603222
-  },
-  "language": "Japanese"
+  }
 }
