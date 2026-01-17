@@ -1,0 +1,11 @@
+#!/bin/bash
+set -e
+
+npm install -g agent-browser@latest
+agent-browser install
+
+mkdir -p ~/.claude/skills/agent-browser
+curl -o ~/.claude/skills/agent-browser/SKILL.md \
+  https://raw.githubusercontent.com/vercel-labs/agent-browser/main/skills/agent-browser/SKILL.md
+
+npx playwright install
