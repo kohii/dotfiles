@@ -7,6 +7,8 @@ defaults write -g KeyRepeat -int 1 # normal minimum is 2 (30 ms)
 defaults write NSGlobalDomain AppleKeyboardUIMode -int 2
 ## Use F1, F2, etc. keys as standard function keys
 defaults write NSGlobalDomain com.apple.keyboard.fnState -bool true
+## Enable key repeating
+defaults write -g ApplePressAndHoldEnabled -bool false
 
 # Dock
 ## Hide recent apps
