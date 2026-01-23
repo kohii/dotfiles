@@ -65,12 +65,10 @@
       "Read(**/.env)",
       "Read(~/.aws/**)",
       "Read(~/.ssh/**)",
-      "Bash(sudo:*)",
-      "Bash(rm -rf /*)"
+      "Bash(sudo:*)"
     ],
     "defaultMode": "acceptEdits"
   },
-  "model": "opus",
   "statusLine": {
     "type": "command",
     "command": "~/.claude/statusline.sh"
