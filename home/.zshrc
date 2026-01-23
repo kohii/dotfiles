@@ -103,9 +103,7 @@ alias teee='tee >(pbcopy)'
 alias python=python3
 alias pip=pip3
 
-alias claude="~/.claude/local/claude"
 alias yolo='claude --dangerously-skip-permissions'
-alias claude-old="npx @anthropic-ai/claude-code@1.0.24"
 
 alias serena='uvx --from git+https://github.com/oraios/serena serena'
 alias serena-index='serena project index'
@@ -115,8 +113,6 @@ alias ccdashboard='npx claude-code-templates@latest'
 
 alias spec-kit='uvx --from git+https://github.com/github/spec-kit.git'
 alias spec-kit-init='spec-kit specify init'
-
-alias claude-sb='sandbox-exec -f ~/dotfiles/bin/permissive-open.sb -D TARGET_DIR="$(pwd)" -D HOME_DIR="$HOME" ~/.claude/local/claude --dangerously-skip-permissions'
 
 alias codex='bun add -g @openai/codex@latest && codex'
 
