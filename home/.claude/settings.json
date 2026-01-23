@@ -87,5 +87,29 @@
   },
   "feedbackSurveyState": {
     "lastShownTime": 1754089603222
+  },
+  "hooks": {
+    "Stop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "terminal-notifier -message \"Claude Code Finished\" -sound default"
+          }
+        ]
+      }
+    ],
+    "Notification": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "terminal-notifier -message \"Claude Code Needs Help\" -sound Basso"
+          }
+        ]
+      }
+    ]
   }
 }
