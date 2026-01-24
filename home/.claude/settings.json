@@ -54,6 +54,7 @@
       "Bash(gh api:*)",
       "Bash(jq:*)",
       "Bash(sed:*)",
+      "Bash(mkdir:*)",
       "Bash(./gradlew:*)",
       "mcp__playwright",
       "mcp__serena",
