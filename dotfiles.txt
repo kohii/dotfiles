@@ -5,6 +5,10 @@
 .config/nvim
 Brewfile
 .codex/AGENTS.md
+.codex/skills
+.codex/agents
+.cursor/skills
+.cursor/agents
 .config/starship.toml
 .config/kitty/kitty.conf
 .config/sheldon/plugins.toml
