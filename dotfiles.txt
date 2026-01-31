@@ -2,6 +2,7 @@
 .gitconfig
 .gitignore_global
 .zshrc
+.completion-for-pnpm.zsh
 .config/nvim
 Brewfile
 .codex/AGENTS.md
