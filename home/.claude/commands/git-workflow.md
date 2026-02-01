@@ -4,6 +4,13 @@ description: "Create branch, commit, push, and create PR with GitHub Actions mon
 
 # Git Workflow Automation
 
+## Git context
+- Current branch: !`git rev-parse --abbrev-ref HEAD`
+- Repository url: !`git config --get remote.origin.url`
+- Git status: !`git status --porcelain`
+
+## Instructions
+
 Create a new branch, commit changes, push to remote, create a pull request, and monitor GitHub Actions checks. Help fix issues if checks fail.
 
 Branch name: $ARGUMENTS

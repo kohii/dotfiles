@@ -1,5 +1,12 @@
 # Git Workflow with Worktree
 
+## Git context
+- Current branch: !`git rev-parse --abbrev-ref HEAD`
+- Repository url: !`git config --get remote.origin.url`
+- Git status: !`git status --porcelain`
+
+## Instructions
+
 $ARGUMENTS
 
 1. Understand the user's request.
