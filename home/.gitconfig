@@ -38,6 +38,27 @@
 	se = !git rev-list --all | xargs git grep -F
 	dmb = ! git branch --merged | grep -v \\* | grep -v -E '\\b(master|main|develop)\\b' | xargs -n 1 git branch -d
 
+	retag = "!f() { \
+		tag=\"$1\"; \
+		if [ -z \"$tag\" ]; then \
+			echo \"Usage: git retag <tag>\"; \
+			return 1; \
+		fi; \
+		if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then \
+			echo \"Error: not inside a Git repository.\"; \
+			return 1; \
+		fi; \
+		remote=\"origin\"; \
+		if git show-ref --tags --quiet \"refs/tags/$tag\"; then \
+			git tag -d \"$tag\"; \
+		fi; \
+		if git ls-remote --tags --quiet \"$remote\" \"refs/tags/$tag\" >/dev/null 2>&1; then \
+			git push \"$remote\" \":refs/tags/$tag\"; \
+		fi; \
+		git tag \"$tag\"; \
+		git push \"$remote\" \"$tag\"; \
+	}; f"
+
     wt = worktree
     wtl = worktree list
     wta = worktree add
@@ -113,4 +134,3 @@
 
 [init]
 	defaultBranch = main
-
