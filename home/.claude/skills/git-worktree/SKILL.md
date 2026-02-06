@@ -1,32 +1,31 @@
 ---
 name: git-worktree
-description: Create a new Git worktree with a dedicated branch.
+description: Git worktreeを専用ブランチで作成する。
 ---
 
 # Git Worktree
 
-The following commands are available:
+利用可能なコマンド:
 
-## Create a new branch and add a worktree
+## 新規ブランチでworktreeを作成
 ```bash
 git wtab <branch-name>
 ```
-- Create a new branch with the specified branch name and add a worktree
-- The worktree is created at `../${repo_name}-worktree/${branch_name}`
-- If `setup-project.sh` exists, it will be executed automatically
+- 指定名で新規ブランチを作成しworktreeを追加
+- worktreeは`../${repo_name}-worktree/${branch_name}`に作成される
+- `setup-project.sh`が存在すれば自動実行
 
-## Add an existing branch to a worktree
+## 既存ブランチをworktreeに追加
 ```bash
 git wtac <branch-name>
 ```
-- Add an existing branch (origin/<branch-name>) to a worktree
-- The worktree is created at `../${repo_name}-worktree/${branch_name}`
-- If `setup-project.sh` exists, it will be executed automatically
+- 既存ブランチ（origin/<branch-name>）をworktreeに追加
+- worktreeは`../${repo_name}-worktree/${branch_name}`に作成される
+- `setup-project.sh`が存在すれば自動実行
 
-## Delete worktree and branch
+## worktreeとブランチを削除
 ```bash
 git wtd <branch-name>
 ```
-- Delete the worktree and also delete the branch (force delete with `-D`)
-- The worktree is deleted from `../${repo_name}-worktree/${branch_name}`
-
+- worktreeを削除し、ブランチも強制削除（`-D`）
+- `../${repo_name}-worktree/${branch_name}`から削除される

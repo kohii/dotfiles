@@ -1,26 +1,26 @@
-# Git Workflow with Worktree
+# Worktreeを使ったGitワークフロー
 
-## Git context
-- Current branch: !`git rev-parse --abbrev-ref HEAD`
-- Repository url: !`git config --get remote.origin.url`
-- Git status: !`git status --porcelain`
+## Gitコンテキスト
+- 現在のブランチ: !`git rev-parse --abbrev-ref HEAD`
+- リポジトリURL: !`git config --get remote.origin.url`
+- Git状態: !`git status --porcelain`
 
-## Instructions
+## 手順
 
 $ARGUMENTS
 
-1. Understand the user's request.
-2. Create a worktree with `git wtba <BRANCH_NAME>` command.
-  - `git wtab` will create worktree directory and add branch, and run setup script if it exists.
-  - Choose the branch name based on the user's request.
-3. Switch to the worktree directory.
-4. Make changes in the worktree directory.
-  - It is recommended to write failing tests first when fixing bugs.
-5. Commit changes.
-  - If it becomes a long task, you should commit changes in small steps so that you can revert to the previous state if needed.
-6. Push changes.
-7. Create a pull request.
-8. Monitor GitHub Actions checks.
-9. Help fix issues if checks fail.
-10. Go back to the original directory.
-11. Delete the worktree with `git wtd <BRANCH_NAME>` command.
+1. ユーザーのリクエストを理解する。
+2. `git wtab <BRANCH_NAME>`コマンドでworktreeを作成する。
+  - `git wtab`はworktreeディレクトリの作成、ブランチの追加、セットアップスクリプトの実行（存在する場合）を行う。
+  - ユーザーのリクエストに基づきブランチ名を選択する。
+3. worktreeディレクトリに移動する。
+4. worktreeディレクトリで変更を行う。
+  - バグ修正時は先に失敗するテストを書くことを推奨。
+5. 変更をコミットする。
+  - 長いタスクの場合、必要に応じて以前の状態に戻せるよう小さいステップでコミットする。
+6. 変更をプッシュする。
+7. PRを作成する。
+8. GitHub Actionsチェックを監視する。
+9. チェック失敗時は修正を支援する。
+10. 元のディレクトリに戻る。
+11. `git wtd <BRANCH_NAME>`コマンドでworktreeを削除する。

@@ -1,14 +1,14 @@
 ---
 name: code-extraction-refactoring
-description: Best practices for refactoring involving code extraction
+description: コード抽出を伴うリファクタリングのベストプラクティス
 ---
 
-1. When extracting modules, try to move code first (not writing new code), and then refactor.
-  - This approach helps prevent accidental code loss.
-  - If a move is difficult, consider refactoring the code to make it easier to move before actually moving it.
-2. After refactoring, look for glue code or awkward code to improve.
-  - Prioritize ideal code structure over backward compatibility or minimizing code changes.
-  - Ask yourself: "How would I write this if starting from scratch?"
-3. Commit the changes after each step.
+1. モジュール抽出時は、新規コードを書くのではなく、まず既存コードを移動する。
+  - コードの意図しない欠落を防ぐため。
+  - 移動が難しい場合は、移動しやすくなるよう先にリファクタリングする。
+2. リファクタリング後、グルーコードや不自然なコードがないか確認し改善する。
+  - 後方互換性や変更量の最小化より、理想的なコード構造を優先する。
+  - 「ゼロから書くならどう書くか？」を自問する。
+3. 各ステップごとにコミットする。
 
-This is not a strict rule. Use this approach only if it fits the situation.
+厳密なルールではない。状況に合う場合のみ適用すること。

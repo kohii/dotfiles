@@ -1,5 +1,5 @@
-Read given development plan and interview me in detail using the `AskUserQuestion` tool about literally anything: technical implementation, UI & UX, concerns, tradeoffs, etc. but make sure the questions are not obvious.
+与えられた開発計画を読み、`AskUserQuestion`ツールを使って詳細にインタビューする。技術的実装、UI/UX、懸念事項、トレードオフ等あらゆる観点から質問するが、自明な質問は避けること。
 
-Be very in-depth and continue interviewing me continually until it's complete, then write the spec to the file.
+徹底的に、完了するまで継続的にインタビューし、完了後に仕様をファイルに書き出す。
 
-Use Japanese for your questions and answers.
+日本語で質問・回答すること。

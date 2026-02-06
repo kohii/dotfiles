@@ -1,60 +1,60 @@
 ---
 name: draw.io
-description: Best practices for creating draw.io (.drawio) XML diagrams with proper font rendering, arrow placement, and text sizing.
+description: draw.io (.drawio) XML図の作成ガイド。フォント設定、矢印配置、テキストサイズの注意点。
 ---
 
-# draw.io Diagram Creation Skill
+# draw.io 図作成スキル
 
-## Critical Rules
+## 必須ルール
 
-### 1. Font Configuration
-`defaultFontFamily` in `mxGraphModel` is insufficient. Add `fontFamily` to **every** text element:
+### 1. フォント設定
+`mxGraphModel`の`defaultFontFamily`だけでは不十分。**全テキスト要素**に`fontFamily`を追加:
 
 ```xml
-<!-- ❌ BAD -->
+<!-- ❌ NG -->
 <mxCell id="label" value="Text" style="text;html=1;fontSize=18;" />
 
-<!-- ✅ GOOD -->
+<!-- ✅ OK -->
 <mxCell id="label" value="Text" style="text;html=1;fontSize=18;fontFamily=Noto Sans JP;" />
 ```
 
-### 2. Arrow Layering
-Place arrows **before** shapes in XML (rendering order = XML order):
+### 2. 矢印のレイヤー順序
+XMLの記述順 = 描画順のため、矢印を図形**より前**に配置:
 
 ```xml
 <root>
   <mxCell id="0" />
   <mxCell id="1" parent="0" />
-  
-  <!-- Arrows first (background) -->
+
+  <!-- 矢印を先に（背面） -->
   <mxCell id="arrow1" edge="1" parent="1">...</mxCell>
-  
-  <!-- Shapes after (foreground) -->
+
+  <!-- 図形を後に（前面） -->
   <mxCell id="box1" vertex="1" parent="1">...</mxCell>
 </root>
 ```
 
-### 3. Arrow Label Spacing
-Labels must be **20px+ away** from arrow coordinates:
+### 3. 矢印ラベルの間隔
+ラベルは矢印座標から**20px以上**離す:
 
 ```xml
-<!-- ❌ BAD: Only 10px gap -->
+<!-- ❌ NG: 10pxしかない -->
 <mxCell id="arrow"><mxGeometry><mxPoint y="220" as="sourcePoint"/></mxGeometry></mxCell>
 <mxCell id="label"><mxGeometry y="210" width="60" height="20" /></mxCell>
 
-<!-- ✅ GOOD: 40px gap -->
+<!-- ✅ OK: 40pxの間隔 -->
 <mxCell id="arrow"><mxGeometry><mxPoint y="220" as="sourcePoint"/></mxGeometry></mxCell>
 <mxCell id="label"><mxGeometry y="180" width="60" height="20" /></mxCell>
 ```
 
-### 4. Arrow Connections
-Use explicit coordinates, not connection parameters (exitY/entryY unreliable on text):
+### 4. 矢印の接続
+テキストへのexitY/entryYは不安定。明示的な座標を使用:
 
 ```xml
-<!-- ❌ BAD -->
+<!-- ❌ NG -->
 <mxCell id="arrow" source="label1" target="label2" style="exitX=0.5;exitY=1;" />
 
-<!-- ✅ GOOD -->
+<!-- ✅ OK -->
 <mxCell id="arrow" edge="1" parent="1">
   <mxGeometry relative="1" as="geometry">
     <mxPoint x="190" y="300" as="sourcePoint"/>
@@ -63,38 +63,38 @@ Use explicit coordinates, not connection parameters (exitY/entryY unreliable on 
 </mxCell>
 ```
 
-### 5. Font Size
-Use **18px** (1.5x standard) for readability. After changing size, verify PNG and adjust `mxGeometry`.
+### 5. フォントサイズ
+可読性のため**18px**（標準の1.5倍）を使用。サイズ変更後はPNGで確認し`mxGeometry`を調整。
 
-### 6. Japanese Text Width
-Allocate **30-40px per character**:
+### 6. 日本語テキストの幅
+1文字あたり**30-40px**を確保:
 
 ```xml
-<!-- ❌ BAD: 200px for 10 chars = 20px/char → line breaks -->
+<!-- ❌ NG: 10文字に200px = 20px/文字 → 改行される -->
 <mxCell value="シンプルなフロー図"><mxGeometry width="200" /></mxCell>
 
-<!-- ✅ GOOD: 400px for 10 chars = 40px/char -->
+<!-- ✅ OK: 10文字に400px = 40px/文字 -->
 <mxCell value="シンプルなフロー図"><mxGeometry width="400" /></mxCell>
 ```
 
-## PNG Conversion
+## PNG変換
 
-### Setup
+### セットアップ
 ```bash
 # macOS
 brew install --cask drawio
 
-# Convert
+# 変換
 drawio -x -f png -s 2 -t -o output.png input.drawio
 ```
 
-### CLI Options
-- `-x` Export mode
-- `-f png` PNG format
-- `-s 2` 2x scale (high-res)
-- `-t` Transparent background
+### CLIオプション
+- `-x` エクスポートモード
+- `-f png` PNG形式
+- `-s 2` 2倍スケール（高解像度）
+- `-t` 透過背景
 
-### Auto-conversion (pre-commit)
+### 自動変換 (pre-commit)
 `.pre-commit-config.yaml`:
 ```yaml
 repos:
@@ -123,51 +123,51 @@ for drawio in "$@"; do
 done
 ```
 
-## Verification Workflow
-1. Generate PNG: `drawio -x -f png -s 2 -t -o /tmp/review.png diagram.drawio`
-2. Inspect visually: `open /tmp/review.png`
-3. Have Claude Code review PNG for overlaps/cutoffs
-4. Fix issues and repeat
+## 確認手順
+1. PNG生成: `drawio -x -f png -s 2 -t -o /tmp/review.png diagram.drawio`
+2. 目視確認: `open /tmp/review.png`
+3. Claude CodeでPNGの重なり・はみ出しを確認
+4. 修正して繰り返す
 
-## Claude Code Prompt Template
+## Claude Code用プロンプトテンプレート
 
 ```
-Create a draw.io diagram following these rules:
+以下のルールでdraw.io図を作成:
 
-XML STRUCTURE:
-- Set defaultFontFamily="Noto Sans JP" in mxGraphModel
-- Set page="0"
-- No background color
+XML構造:
+- mxGraphModelにdefaultFontFamily="Noto Sans JP"を設定
+- page="0"を設定
+- 背景色なし
 
-FONTS:
-- Add fontFamily=Noto Sans JP; to ALL text elements
-- Use fontSize=18
-- Japanese text: 30-40px width per character
+フォント:
+- 全テキスト要素にfontFamily=Noto Sans JP;を追加
+- fontSize=18を使用
+- 日本語: 1文字30-40px幅を確保
 
-ARROWS:
-- Place arrows before shapes in XML
-- Position labels 20px+ away from arrows
-- Use explicit coordinates (not exitY/entryY)
+矢印:
+- XMLで矢印を図形より前に配置
+- ラベルは矢印から20px以上離す
+- 明示的な座標を使用（exitY/entryYは不可）
 
-OUTPUT:
-- Create .drawio file
-- Generate PNG for verification
+出力:
+- .drawioファイルを作成
+- 確認用PNGを生成
 ```
 
-## Quality Checklist
-- [ ] All text has `fontFamily` in style
-- [ ] Font size ≥18px
-- [ ] Arrows before shapes in XML
-- [ ] Arrow labels 20px+ from arrows
-- [ ] Japanese text: adequate width
-- [ ] PNG generated and inspected
+## 品質チェックリスト
+- [ ] 全テキストのstyleに`fontFamily`あり
+- [ ] フォントサイズ ≥18px
+- [ ] XMLで矢印が図形より前
+- [ ] 矢印ラベルが20px以上離れている
+- [ ] 日本語テキストの幅が十分
+- [ ] PNG生成・目視確認済み
 
-## Common Issues
+## よくある問題
 
-| Issue | Cause | Fix |
-|-------|-------|-----|
-| Font not rendering | `fontFamily` missing | Add to every text element |
-| Arrows cover text | Arrows after shapes in XML | Move arrows to beginning |
-| Label overlaps arrow | Insufficient spacing | Increase Y-distance by 20px+ |
-| Text wrapping | Width too small | 35px per character |
-| Text cut off | Geometry not updated | Increase box dimensions |
+| 問題 | 原因 | 対処 |
+|------|------|------|
+| フォントが反映されない | `fontFamily`未設定 | 全テキスト要素に追加 |
+| 矢印がテキストを覆う | XMLで矢印が図形の後 | 矢印をXML先頭に移動 |
+| ラベルが矢印に重なる | 間隔不足 | Y距離を20px以上確保 |
+| テキスト折り返し | 幅が狭い | 1文字35pxで計算 |
+| テキスト切れ | Geometry未更新 | ボックスサイズを拡大 |

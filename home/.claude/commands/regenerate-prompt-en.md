@@ -1,8 +1,9 @@
 # Regenerate Prompt
 
-Please reflect on the prompts given so far and what you did in response to them, then think of an improved prompt.
+これまでに与えられたプロンプトと、それに対して行ったことを振り返り、改善されたプロンプト文章を考えてください。
 
-- However, you must not include details that are only known now after completing everything (I don't know the details of the task yet)
-- Please make the text as simple as possible
-  - When giving work instructions to others, it's not realistic to craft perfectly organized sentences
-  - Within the range that allows for correct work to be done, make it something that can be written roughly
+- なお、全て終えた今だからわかる詳細を盛り込むんではいけません（私は課題の詳細についてまだ知らない）
+- なるべくシンプルな文章になるようにしてください
+  - 他人に仕事を指示する際に、整理された文章を練るのは現実的ではありません
+  - 正しい作業ができる範囲で、雑に書けるような文章にしてください
+- 英語で書いてください

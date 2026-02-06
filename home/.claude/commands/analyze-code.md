@@ -1,46 +1,46 @@
-# Code Overview Generator
+# コード概要生成
 
-## Arguments
+## 引数
 $ARGUMENTS
 
-## Instructions
-Analyze "Arguments" comprehensively - both the target itself AND its surrounding context:
+## 手順
+「引数」を包括的に分析する—対象自体とその周辺コンテキストの両方:
 
-1. **Discover Context**:
-   - Find target: "$ARGUMENTS"
-   - Map ALL related files, parent modules, sibling components
-   - Trace upstream dependencies and downstream consumers
-   - Identify architectural layer and domain boundaries
+1. **コンテキスト調査**:
+   - 対象を特定: "$ARGUMENTS"
+   - 関連ファイル、親モジュール、兄弟コンポーネントを全て把握
+   - 上流の依存元と下流の利用先を追跡
+   - アーキテクチャレイヤーとドメイン境界を特定
 
-2. **Analyze Structure**:
-   - **Target itself**: Internal structure, methods, properties
-   - **Inbound**: What depends on this? Who calls it? What data comes in?
-   - **Outbound**: What does it depend on? What does it call? What data goes out?
-   - **Siblings**: Related components at same abstraction level
-   - **Hierarchy**: Parent modules/packages and position in overall architecture
+2. **構造分析**:
+   - **対象自体**: 内部構造、メソッド、プロパティ
+   - **流入**: 何がこれに依存？ 誰が呼ぶ？ どんなデータが入る？
+   - **流出**: 何に依存？ 何を呼ぶ？ どんなデータが出る？
+   - **兄弟**: 同じ抽象レベルの関連コンポーネント
+   - **階層**: 親モジュール/パッケージとアーキテクチャ全体での位置
 
-3. **Extract Relationships**:
+3. **関係性抽出**:
 ```
-Layer Position: [Presentation|Application|Domain|Infrastructure]
-Module Tree: parent > current > children
-Dependencies: upstream → TARGET → downstream
+レイヤー位置: [プレゼンテーション|アプリケーション|ドメイン|インフラストラクチャ]
+モジュールツリー: 親 > 対象 > 子
+依存関係: 上流 → 対象 → 下流
 ``````
 
-4. **Core Understanding**:
-   - **Purpose & Responsibility**: Why does this exist?
-   - **Contracts**: Interfaces, APIs, protocols it implements/exposes
-   - **Patterns**: Design patterns, architectural styles used
-   - **State & Lifecycle**: How it's initialized, managed, destroyed
-   - **Critical Paths**: Most important execution flows through this code
+4. **核心の理解**:
+   - **目的・責務**: なぜこれが存在する？
+   - **契約**: 実装/公開しているインターフェース、API、プロトコル
+   - **パターン**: 使用されているデザインパターン、アーキテクチャスタイル
+   - **状態・ライフサイクル**: 初期化、管理、破棄の方法
+   - **重要パス**: このコードを通る最重要実行フロー
 
-5. **Output** to `docs/overview-{timestamp}.md`:
-   - **Context Map**: Tree structure showing position in codebase
-   - **Dependency Matrix**: Table [Component | Relationship | Type | Purpose]
-   - **Interface Contracts**: Structured list of public APIs/methods
-   - **Data Flow**: Input types → Transformations → Output types
-   - **Collaboration Map**: Who talks to whom and why
-   - **Key Insights**: Critical knowledge for understanding this code
-   - **Navigation Guide**: Where to look next for deeper understanding
+5. **出力** → `docs/overview-{timestamp}.md`:
+   - **コンテキストマップ**: コードベース内の位置を示すツリー構造
+   - **依存関係マトリクス**: 表 [コンポーネント | 関係 | 種別 | 目的]
+   - **インターフェース契約**: 公開API/メソッドの構造化リスト
+   - **データフロー**: 入力型 → 変換 → 出力型
+   - **連携マップ**: 誰が誰と何のために通信するか
+   - **重要な知見**: このコードを理解するための必須知識
+   - **ナビゲーションガイド**: 深掘りのために次に見るべき箇所
 
-Use Mermaid for complex relationships, structured tables/lists for simpler ones.
-Focus on "understanding the context" not just the address.
+複雑な関係にはMermaidを、単純なものには表/リストを使用。
+「アドレスの特定」ではなく「コンテキストの理解」に注力する。

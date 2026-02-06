@@ -1,26 +1,26 @@
 ---
-description: "Create branch, commit, push, and create PR with GitHub Actions monitoring"
+description: "ブランチ作成、コミット、プッシュ、PR作成、GitHub Actionsの監視"
 ---
 
-# Git Workflow Automation
+# Gitワークフロー自動化
 
-## Git context
-- Current branch: !`git rev-parse --abbrev-ref HEAD`
-- Repository url: !`git config --get remote.origin.url`
-- Git status: !`git status --porcelain`
+## Gitコンテキスト
+- 現在のブランチ: !`git rev-parse --abbrev-ref HEAD`
+- リポジトリURL: !`git config --get remote.origin.url`
+- Git状態: !`git status --porcelain`
 
-## Instructions
+## 手順
 
-Create a new branch, commit changes, push to remote, create a pull request, and monitor GitHub Actions checks. Help fix issues if checks fail.
+新規ブランチ作成、変更のコミット、リモートへプッシュ、PR作成、GitHub Actionsチェックの監視を行う。チェック失敗時は修正を支援する。
 
-Branch name: $ARGUMENTS
+ブランチ名: $ARGUMENTS
 
-- If a branch name is provided, use it.
-- If no branch name is provided and the current branch is `main`, `develop`, `master` or `release`, decide an appropriate branch name.
-  - If the repository's organization is `bw-company`, use prefix `kohii/`.
-- Otherwise, use the current branch. (No need to create a new branch.)
+- ブランチ名が指定されている場合、それを使用。
+- ブランチ名未指定で現在のブランチが`main`、`develop`、`master`、`release`の場合、適切なブランチ名を決定する。
+  - リポジトリのorganizationが`bw-company`の場合、`kohii/`プレフィックスを使用。
+- それ以外の場合、現在のブランチを使用。（新規ブランチ作成不要）
 
-PR content:
+PR内容:
 
-- If the repository's organization is `bw-company`, write the title and description in Japanese. 
-- Run linter before committing.
+- リポジトリのorganizationが`bw-company`の場合、タイトルと説明を日本語で記述。
+- コミット前にlinterを実行する。
