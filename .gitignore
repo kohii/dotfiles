@@ -9,4 +9,4 @@
 Brewfile.lock.json
 
 .claude/settings.local.json
-.claude/skills/.system/
+home/.claude/skills/.system/
