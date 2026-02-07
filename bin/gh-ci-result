@@ -1,0 +1,245 @@
+#!/bin/bash
+
+# Get GitHub Actions CI result: wait until all runs are completed (poll every 30s),
+# then output status and failed run/job details with logs. Output is optimized for coding agents.
+# If all runs are already completed, returns immediately without waiting.
+
+set -euo pipefail
+
+## Defaults and usage
+POLL_INTERVAL="${GH_CI_POLL_INTERVAL:-30}"
+REPO_ARG=()
+usage() {
+    echo "Usage: $(basename "$0") [OPTIONS] [BRANCH|COMMIT_SHA|PR_NUMBER|PR_URL|RUN_ID]" >&2
+    echo "" >&2
+    echo "  Polls every ${POLL_INTERVAL}s until all relevant workflow runs are completed," >&2
+    echo "  then prints CI status and (on failure) run/job info plus a temp file path with failed step logs." >&2
+    echo "  If all runs are already completed, returns immediately without waiting." >&2
+    echo "" >&2
+    echo "  Target (one of):" >&2
+    echo "    BRANCH       Branch name (default: current branch from git)" >&2
+    echo "    COMMIT_SHA   Commit SHA to filter runs" >&2
+    echo "    PR_NUMBER    PR number; uses branch from gh pr view" >&2
+    echo "    PR_URL       https://github.com/owner/repo/pull/NUMBER" >&2
+    echo "    OWNER/REPO#NUMBER   e.g. owner/repo#123" >&2
+    echo "    RUN_ID       Single workflow run ID to wait for" >&2
+    echo "" >&2
+    echo "  Options:" >&2
+    echo "    -R, --repo OWNER/REPO   Repository" >&2
+    echo "    -i, --interval SECS     Poll interval (default: ${POLL_INTERVAL})" >&2
+    echo "    -h, --help               This help" >&2
+    exit 1
+}
+
+require_cmd() {
+    local cmd="$1"
+    if ! command -v "$cmd" >/dev/null 2>&1; then
+        echo "Error: required command '$cmd' not found in PATH" >&2
+        exit 1
+    fi
+}
+
+## Parse options and target
+TARGET=""
+while [ $# -gt 0 ]; do
+    case "$1" in
+        -R|--repo) REPO_ARG=(--repo "$2"); shift 2 ;;
+        -i|--interval) POLL_INTERVAL="$2"; shift 2 ;;
+        -h|--help) usage ;;
+        -*) echo "Error: unknown option $1" >&2; usage ;;
+        *)  TARGET="$1"; shift; break ;;
+    esac
+done
+# Allow target after options
+[ $# -gt 0 ] && TARGET="${TARGET:-$1}"
+
+require_cmd gh
+require_cmd jq
+
+## Resolve branch/commit/run list for polling
+# Sets: LIST_FLAGS (for gh run list), or RUN_IDS (single run to watch)
+LIST_FLAGS=()
+RUN_IDS=()
+resolve_target() {
+    local branch commit pr_num run_id owner repo_name
+    if [ -n "$TARGET" ]; then
+        # PR URL or owner/repo#number (same as gh-ready-when-green)
+        if [[ "$TARGET" =~ ^https?://github\.com/([^/]+)/([^/]+)/pull/([0-9]+)(/.*)?$ ]]; then
+            owner="${BASH_REMATCH[1]}"
+            repo_name="${BASH_REMATCH[2]}"
+            pr_num="${BASH_REMATCH[3]}"
+            REPO_ARG=(--repo "$owner/$repo_name")
+            branch=$(gh pr view "$pr_num" ${REPO_ARG+"${REPO_ARG[@]}"} --json headRefName -q '.headRefName // empty')
+            if [ -z "$branch" ]; then
+                echo "Error: could not get branch for PR $pr_num" >&2
+                exit 1
+            fi
+            LIST_FLAGS=(--branch "$branch")
+            return
+        fi
+        if [[ "$TARGET" =~ ^([^/]+)/([^#]+)#([0-9]+)$ ]]; then
+            owner="${BASH_REMATCH[1]}"
+            repo_name="${BASH_REMATCH[2]}"
+            pr_num="${BASH_REMATCH[3]}"
+            REPO_ARG=(--repo "$owner/$repo_name")
+            branch=$(gh pr view "$pr_num" ${REPO_ARG+"${REPO_ARG[@]}"} --json headRefName -q '.headRefName // empty')
+            if [ -z "$branch" ]; then
+                echo "Error: could not get branch for PR $pr_num" >&2
+                exit 1
+            fi
+            LIST_FLAGS=(--branch "$branch")
+            return
+        fi
+        if [[ "$TARGET" =~ ^[0-9]+$ ]]; then
+            # Could be PR number or run ID; prefer run ID if it's large, else PR
+            if [ "$TARGET" -gt 100000 ]; then
+                RUN_IDS+=("$TARGET")
+                return
+            fi
+            pr_num="$TARGET"
+            branch=$(gh pr view "$pr_num" ${REPO_ARG+"${REPO_ARG[@]}"} --json headRefName -q '.headRefName // empty')
+            if [ -z "$branch" ]; then
+                echo "Error: could not get branch for PR $pr_num" >&2
+                exit 1
+            fi
+            LIST_FLAGS=(--branch "$branch")
+            return
+        fi
+        if git rev-parse --verify "$TARGET" 2>/dev/null; then
+            commit=$(git rev-parse --verify "$TARGET" 2>/dev/null)
+            LIST_FLAGS=(--commit "$commit")
+            return
+        fi
+        # Treat as branch name
+        LIST_FLAGS=(--branch "$TARGET")
+        return
+    fi
+    # Default: current branch
+    branch=$(git rev-parse --abbrev-ref HEAD 2>/dev/null || true)
+    if [ -z "$branch" ] || [ "$branch" = "HEAD" ]; then
+        echo "Error: could not determine current branch; run from a git repo or pass BRANCH/COMMIT/PR/PR_URL/RUN_ID" >&2
+        exit 1
+    fi
+    LIST_FLAGS=(--branch "$branch")
+}
+
+resolve_target
+
+## Poll until all runs are completed (exits immediately if already all completed)
+echo "Checking GitHub Actions runs (poll every ${POLL_INTERVAL}s until all completed)..." >&2
+while true; do
+    if [ ${#RUN_IDS[@]} -gt 0 ]; then
+        # Single run mode
+        st=$(gh run view "${RUN_IDS[0]}" ${REPO_ARG+"${REPO_ARG[@]}"} --json status,conclusion -q '.status + " " + (.conclusion // "")' 2>/dev/null || echo "unknown ")
+        status="${st%% *}"
+        conclusion="${st#* }"
+        if [ "$status" = "completed" ] || [ -n "$conclusion" ]; then
+            echo "Run ${RUN_IDS[0]} completed (conclusion: ${conclusion:-none})." >&2
+            break
+        fi
+        echo "  Run ${RUN_IDS[0]} status: $status" >&2
+    else
+        runs_json=$(gh run list ${REPO_ARG+"${REPO_ARG[@]}"} ${LIST_FLAGS+"${LIST_FLAGS[@]}"} --limit 50 --json databaseId,status,conclusion 2>/dev/null || true)
+        if [ -z "$runs_json" ]; then
+            echo "  No runs found for target; waiting..." >&2
+            sleep "$POLL_INTERVAL"
+            continue
+        fi
+        in_progress=$(echo "$runs_json" | jq -r '[.[] | select(.status != "completed")] | length')
+        total=$(echo "$runs_json" | jq -r 'length')
+        if [ "$in_progress" -eq 0 ] && [ "$total" -gt 0 ]; then
+            echo "All $total run(s) completed." >&2
+            break
+        fi
+        if [ "$in_progress" -eq 0 ]; then
+            echo "No runs to wait for; exiting." >&2
+            break
+        fi
+        echo "  Runs: $total total, $in_progress in progress" >&2
+    fi
+    sleep "$POLL_INTERVAL"
+done
+
+## Collect failed run IDs
+failed_run_ids=()
+if [ ${#RUN_IDS[@]} -gt 0 ]; then
+    conclusion=$(gh run view "${RUN_IDS[0]}" ${REPO_ARG+"${REPO_ARG[@]}"} --json conclusion -q '.conclusion // ""')
+    case "$conclusion" in failure|timed_out|startup_failure)
+        failed_run_ids+=("${RUN_IDS[0]}")
+        ;;
+    esac
+else
+    runs_json=$(gh run list ${REPO_ARG+"${REPO_ARG[@]}"} ${LIST_FLAGS+"${LIST_FLAGS[@]}"} --limit 50 --json databaseId,conclusion 2>/dev/null || true)
+    if [ -n "$runs_json" ]; then
+        while read -r id; do
+            [ -z "$id" ] && continue
+            failed_run_ids+=("$id")
+        done < <(echo "$runs_json" | jq -r '.[] | select(.conclusion == "failure" or .conclusion == "timed_out" or .conclusion == "startup_failure") | .databaseId | tostring')
+    fi
+fi
+
+## No failures -> exit 0 and minimal output for agents
+if [ ${#failed_run_ids[@]} -eq 0 ]; then
+    echo "CI_STATUS=success"
+    echo "CI_FAILURE_REPORT_PATH="
+    echo "CI_FAILURE_SUMMARY=No failed runs."
+    exit 0
+fi
+
+## Prepare report file and summary for agents
+REPORT_FILE=$(mktemp -t "gh-ci-result-XXXXXX.txt")
+trap 'rm -f "$REPORT_FILE"' EXIT
+
+echo "CI_STATUS=failure" >&2
+echo "CI_FAILURE_REPORT_PATH=$REPORT_FILE"
+
+## For each failed run: get run info, list failed jobs, append --log-failed to report
+summary_lines=()
+for run_id in "${failed_run_ids[@]}"; do
+    run_json=$(gh run view "$run_id" ${REPO_ARG+"${REPO_ARG[@]}"} --json name,displayTitle,url,conclusion,headBranch,headSha,jobs 2>/dev/null || true)
+    if [ -z "$run_json" ]; then
+        summary_lines+=("RUN_ID=$run_id (details unavailable)")
+        continue
+    fi
+    wf_name=$(echo "$run_json" | jq -r '.name // "unknown"')
+    display_title=$(echo "$run_json" | jq -r '.displayTitle // ""')
+    run_url=$(echo "$run_json" | jq -r '.url // ""')
+    head_branch=$(echo "$run_json" | jq -r '.headBranch // ""')
+    head_sha=$(echo "$run_json" | jq -r '.headSha // ""')
+
+    {
+        echo ""
+        echo "========== RUN_ID=$run_id | Workflow: $wf_name | Branch: $head_branch | SHA: $head_sha =========="
+        echo "DisplayTitle: $display_title"
+        echo "URL: $run_url"
+        echo ""
+    } >> "$REPORT_FILE"
+
+    summary_lines+=("RUN_ID=$run_id WORKFLOW=\"$wf_name\" BRANCH=$head_branch URL=$run_url")
+
+    # Failed jobs: for each, write header then failed-step logs
+    while read -r jid jname jconc; do
+        [ -z "$jid" ] && continue
+        summary_lines+=("  JOB_ID=$jid JOB_NAME=\"$jname\" CONCLUSION=$jconc")
+        {
+            echo "---------- Job: $jname (JOB_ID=$jid) ----------"
+            echo ""
+        } >> "$REPORT_FILE"
+        gh run view "$run_id" "${REPO_ARG[@]}" --job "$jid" --log-failed 2>/dev/null >> "$REPORT_FILE" || true
+        echo "" >> "$REPORT_FILE"
+    done < <(echo "$run_json" | jq -r '.jobs[]? | select(.conclusion == "failure" or .conclusion == "timed_out" or .conclusion == "startup_failure") | "\(.databaseId) \(.name | gsub("\n"; " ")) \(.conclusion)"')
+done
+
+## Agent-oriented summary on stdout (key=value and RUN_ID/JOB_ID for parsing)
+echo "CI_FAILURE_SUMMARY_START"
+for line in "${summary_lines[@]}"; do
+    echo "$line"
+done
+echo "CI_FAILURE_SUMMARY_END"
+echo ""
+echo "Full failed step logs are in: $REPORT_FILE"
+echo "To read: cat $REPORT_FILE"
+
+# Keep report file; don't delete on exit so agent can read it
+trap - EXIT
+exit 1
